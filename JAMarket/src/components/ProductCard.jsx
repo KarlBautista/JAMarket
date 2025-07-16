@@ -1,0 +1,24 @@
+import React from 'react'
+import "../css/ProductCard.css"
+const ProductCard = () => {
+  return (
+    <div className='product-card-container'>
+        <div className="img-product-card">
+            <img src="https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="" />
+        </div>
+        <div className="description-product-card">
+            <p className='product-card-category'>GUITARS</p>
+            <p className='product-card-name'>Fender Stratocaster</p>
+            <div className='product-price-add-to-cart'>
+             <p className='product-card-price'>$899.99</p>
+            <button className='product-card-add-to-cart'>Add to Cart</button>
+            </div>
+           
+        </div>
+
+      
+    </div>
+  )
+}
+
+export default ProductCard
