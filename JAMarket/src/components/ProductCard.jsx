@@ -1,6 +1,21 @@
 import React from 'react'
 import "../css/ProductCard.css"
+import { useAuthContext } from '../contexts/AuthContext'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 const ProductCard = () => {
+  const { session } = useAuthContext();
+  const navigate = useNavigate();
+
+   
+  
+  const handleAddToCart = () => {
+     if(session === undefined){
+      alert("You need to login first");
+    }
+    navigate("/login");
+  }
+
   return (
     <div className='product-card-container'>
         <div className="img-product-card">
@@ -11,7 +26,7 @@ const ProductCard = () => {
             <p className='product-card-name'>Fender Stratocaster</p>
             <div className='product-price-add-to-cart'>
              <p className='product-card-price'>$899.99</p>
-            <button className='product-card-add-to-cart'>Add to Cart</button>
+            <button onClick={() => handleAddToCart()} className='product-card-add-to-cart'>Add to Cart</button>
             </div>
            
         </div>
