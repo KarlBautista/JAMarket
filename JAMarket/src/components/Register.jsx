@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import "../css/Register.css";
-
+import  { useAuthContext } from "../contexts/AuthContext"
+import { useNavigate } from 'react-router-dom';
 const Register = () => {
-
+    const { session, signUp } = useAuthContext();  
+    const navigate = useNavigate();
     const [registerData, setRegisterData] = useState({
         fullname: "",
         email: "",
@@ -30,38 +32,30 @@ const Register = () => {
         }
 
         try{
-           const response = await fetch("http://localhost:5000/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({...registerData, user_type: "CUSTOMER"})
-           });
-
-           const data = await response.json();
-
-           if(!response.ok) {
-            // Show the specific error message from the server
-            alert(data.message || "Error registering user");
+           const response = await signUp({...registerData, user_type:"CUSTOMER"});
+           if(response.error){
+            alert(response.error);
             return;
            }
-        
-           console.log("Registration successful:", data);
-           alert("Account created successfully!");
-           
-           // Clear form after successful registration
+           alert(response.message || "Registration successful!");
+
+
            setRegisterData({
                fullname: "",
                email: "",
                password: "",
            });
            setConfirmPassword("");
+           navigate("/");
 
         } catch (err) {
             console.error("Registration error:", err);
             alert("Network error. Please try again.");
         }
     }
+
+      console.log(session)
+
 
 
   return (

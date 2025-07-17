@@ -4,10 +4,12 @@ import { Link, useLocation } from 'react-router-dom';
 import "../css/NavBar.css";
 import CartIcon from "../assets/shopping-cart.png";
 import UserIcon from "../assets/user.png";
+import { useAuthContext } from '../contexts/AuthContext';
 
 const NavBar = () => {
   const location = useLocation();
-
+  const { session } = useAuthContext();
+  console.log(session)
   return (
     <div className="navbar-container">
       <div className="brand">
@@ -77,12 +79,16 @@ const NavBar = () => {
         </div>
         
         <div className="user-icon">
-          <Link 
+          {session !== undefined ? (
+            <Link to="/profiles" className={location.pathname === "/profiles" ? "active-link" : ""}
+               > <img src={UserIcon} alt="user" /></Link>
+          ) : (
+             <Link 
             to="/login" 
             className={location.pathname === "/login" ? "active-link" : ""}
           >
             <img src={UserIcon} alt="user" />
-          </Link>
+            </Link>)}
         </div>
       </div>
     </div>

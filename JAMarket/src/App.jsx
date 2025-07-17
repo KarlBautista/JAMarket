@@ -1,29 +1,22 @@
-
+// App.jsx
 import './App.css'
 import NavBar from './components/NavBar'
-import { Route, Router, Routes } from 'react-router-dom'
-import Home from './pages/Home'
 import Footer from './components/Footer'
-import Login from './components/Login'
-import Register from './components/Register'
-import Profiles from './components/Profiles'
+import { Outlet } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import Home from './pages/Home'
 
 function App() {
-
-
   return (
-    <div>
+    <AuthProvider>
       <NavBar />
-        <Routes>
-          <Route path='/' element={<Home />}></Route>
-          <Route path='/login' element={<Login />}></Route>
-          <Route path='/register' element={<Register />}></Route>
-          <Route path='/profiles' element={<Profiles />}></Route>
-        </Routes>
-        <Footer />
-    
-
-    </div>
+      <main>
+        <Outlet /> {
+         
+        }
+      </main>
+      <Footer />
+    </AuthProvider>
   )
 }
 

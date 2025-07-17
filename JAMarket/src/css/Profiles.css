@@ -1,0 +1,9 @@
+.profiles{
+    height: 800px;
+    width: 100%;
+}
+
+.profiles p {
+    font-size: 4rem;
+    color: black;
+}
