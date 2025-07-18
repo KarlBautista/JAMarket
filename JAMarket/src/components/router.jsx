@@ -8,6 +8,7 @@ import Cart from "./Cart";
 import JoinWithUs from "./JoinWithUs";
 import StoreOwnerDashboard from "./StoreOwnerDashboard";
 import StoreOwnerLayout from "./StoreOwnerLayout";
+import Products from "./Products";
 
 const router = createBrowserRouter([
     {
@@ -27,9 +28,10 @@ const router = createBrowserRouter([
         element: <StoreOwnerLayout />,
         children: [
             {path: "dashboard", element: <StoreOwnerDashboard />},
-            {path: "products", element: <StoreOwnerDashboard />},
+            {path: "products", element: <Products />},
             {path: "orders", element: <StoreOwnerDashboard />},
             {path: "customers", element: <StoreOwnerDashboard />},
+
         ]
     }
 ])
