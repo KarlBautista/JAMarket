@@ -5,7 +5,7 @@ import { useAuthContext } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const navigate = useNavigate();
-  const { signIn, session } = useAuthContext();
+  const { signIn, session, partnerData, customerData } = useAuthContext();
   const [user, setUser] = useState({  
     email: "",
     password: ""
@@ -25,8 +25,15 @@ const Login = () => {
         return;
       }
 
-      alert(response.message)
-      navigate("/profiles")
+      alert(response.message);
+      
+      // Navigate based on the response message instead of state
+      if(response.message === "successfully partner signin"){
+        navigate("/store-owner/dashboard");
+      } 
+      else if (response.message === "successfully customer signin"){
+        navigate("/profiles");
+      }
     } catch(err) {
       console.error(err);
     }
@@ -50,8 +57,9 @@ const Login = () => {
 
         <form className="login-form-data" onSubmit={signInUser}>
             <div className="form-group">
-                <label for="email"> Email</label>
+                <label htmlFor="email">Email</label>
                   <input type="email"
+                          id="email"
                           name='email'
                           value={user.email}
                             placeholder='type your email here...'
@@ -60,8 +68,9 @@ const Login = () => {
             </div>
 
             <div className="form-group"> 
-            <label for="password"> Password </label>
+            <label htmlFor="password">Password</label>
              <input type="password"
+                      id="password"
                       name='password'
                       value={user.password}
                       onChange={handleInputChange}

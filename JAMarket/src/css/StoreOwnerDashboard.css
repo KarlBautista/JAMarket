@@ -1,0 +1,331 @@
+.store-owner-dashboard{
+    width: 100%;
+    min-height: 100vh;
+    height: 100vh;
+    background-color: #F3F4F6;
+}
+.store-owner-dashboard{
+    display: flex;
+}
+
+.dashboard{
+    padding: 32px;
+    width: 100%;
+}
+
+.dashboard-header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.dashboard h2{
+    font-size: 24px;
+    color: black;
+}
+
+.statistics-dashboard{
+    height: 200px;
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.monthly-sales-dashboard {
+    width: 25%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 24px;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.monthly-sales-dashboard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.monthly-sales-dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #4f46e5, #7c3aed);
+}
+
+.orders-dashboard{
+    width: 25%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 24px;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.orders-dashboard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.orders-dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #10b981, #059669);
+}
+
+.conversion-rate-dashboard {
+    width: 25%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 24px;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.conversion-rate-dashboard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.conversion-rate-dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.monthly-sales-icon{
+   width: 56px;
+   height: 56px;
+   background: linear-gradient(135deg, #4f46e5, #7c3aed);
+   border-radius: 16px;
+   padding: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.monthly-sales-icon img{
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+.monthly-sales-title{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.monthly-sales-title p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.monthly-sales-title h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+}
+
+.orders-icon{
+   width: 56px;
+   height: 56px;
+   background: linear-gradient(135deg, #10b981, #059669);
+   border-radius: 16px;
+   padding: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.orders-icon img{
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+.orders-title{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.orders-title p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.orders-title h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+}
+
+.conversion-rate-icon{
+   width: 56px;
+   height: 56px;
+   background: linear-gradient(135deg, #f59e0b, #d97706);
+   border-radius: 16px;
+   padding: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.conversion-rate-icon img{
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+.conversion-rate-title{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.conversion-rate-title p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.conversion-rate-title h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+}
+
+.new-customer-icon{
+   width: 56px;
+   height: 56px;
+   background: linear-gradient(135deg, #ef4444, #dc2626);
+   border-radius: 16px;
+   padding: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.new-customer-icon img{
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+.new-customer-title{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.new-customer-title p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.new-customer-title h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.new-customer-dashboard {
+    width: 25%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 24px;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.new-customer-dashboard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.new-customer-dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #ef4444, #dc2626);
+}
+

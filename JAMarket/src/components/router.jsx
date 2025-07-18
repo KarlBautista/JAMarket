@@ -6,10 +6,13 @@ import Profiles from "./Profiles";
 import Home from "../pages/Home";
 import Cart from "./Cart";
 import JoinWithUs from "./JoinWithUs";
+import StoreOwnerDashboard from "./StoreOwnerDashboard";
+import StoreOwnerLayout from "./StoreOwnerLayout";
 
 const router = createBrowserRouter([
     {
-        path: "/", element: <App />,
+        path: "/", 
+        element: <App />,
         children: [
             {path: "/", element: <Home />},
             {path: "/register", element: <Register />},
@@ -17,9 +20,17 @@ const router = createBrowserRouter([
             {path: "/login", element: <Login />},
             {path: "/cart", element: <Cart />},
             {path: "/join-with-us", element: <JoinWithUs />},
-
         ]
-        
+    },
+    {
+        path: "/store-owner",
+        element: <StoreOwnerLayout />,
+        children: [
+            {path: "dashboard", element: <StoreOwnerDashboard />},
+            {path: "products", element: <StoreOwnerDashboard />},
+            {path: "orders", element: <StoreOwnerDashboard />},
+            {path: "customers", element: <StoreOwnerDashboard />},
+        ]
     }
 ])
 

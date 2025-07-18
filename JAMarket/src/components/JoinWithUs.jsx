@@ -32,7 +32,7 @@ const JoinWithUs = () => {
     const joinWithUsBtn = async (e) => {
         e.preventDefault();
         try{
-            const response = await handeJoinWithUs(userData);
+            const response = await handeJoinWithUs({...userData, user_type: "STORE OWNER"});
             if(!response.success){
                 alert(response.error)
                 return;

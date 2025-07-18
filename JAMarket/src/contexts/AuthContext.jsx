@@ -6,6 +6,55 @@ const AuthContext = createContext();
 export const useAuthContext = () => useContext(AuthContext)
 export const AuthProvider = ({ children }) => {
     const [session, setSession] = useState(undefined);
+    const [partnerData, setPartnerData] = useState(null);
+    const [customerData, setCustomerData] = useState(null)
+
+
+    useEffect(() => {
+        const getSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                setSession(session);
+                
+               
+                const { data: userData, error: usersError } = await supabase
+                    .from("users")
+                    .select("*")
+                    .eq("id", session.user.id)
+                    .single();
+
+                if (userData && !usersError) {
+                    if (userData.user_type === "STORE OWNER") {
+                        const { data: userPartnerData, error: partnerError } = await supabase
+                            .from("partners")
+                            .select("*")
+                            .eq("id", session.user.id)
+                            .single();
+
+                        if (userPartnerData && !partnerError) {
+                            setPartnerData(userPartnerData);
+                        }
+                    } else {
+                        setCustomerData(userData);
+                    }
+                }
+            }
+        };
+
+        getSession();
+
+        // Listen for auth changes
+        const { data: { subscription}} = supabase.auth.onAuthStateChange(
+            async (event, session) => {
+                if(event === "SIGNED_OUT"){
+                    setSession(null);
+                    setPartnerData(null);
+                    setCustomerData(null);
+                }
+            }
+        )
+        return () => subscription.unsubscribe();
+    }, []);
 
     const handeJoinWithUs = async ( userData ) => {
         console.log(userData)
@@ -19,7 +68,8 @@ export const AuthProvider = ({ children }) => {
             confirmPassword,
             aboutProductsServices,
             logo,
-            termsConditions
+            termsConditions,
+            user_type,
         } = userData;
 
         if(password !== confirmPassword){
@@ -61,7 +111,6 @@ export const AuthProvider = ({ children }) => {
             }
 
             //3 dito naman pag insert ng mga informations ng partners
-
             const { error: insertError } = await supabase.from("partners")
             .insert({
                 id: userId,
@@ -78,6 +127,21 @@ export const AuthProvider = ({ children }) => {
                 return { success: false, error: `Insert error: ${insertError.message}`}
             }
 
+            const { error: insertUsersError } = await supabase.from("users")
+            .insert({
+                id: userId,
+                first_name: firstName,
+                last_name: lastName,
+                email,
+                phone: phoneNumber,
+                user_type, 
+            });
+
+            if(insertUsersError){
+                return { success: false, error: insertUsersError.message}
+            }
+
+
             setSession(signUpData);
             return { success:  true, message:"successfully registered as partner"}
 
@@ -88,7 +152,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const signUp = async ( registerData ) => {
-        const { fullname, email, password, user_type } = registerData;
+        const { firstName, lastName, email, phoneNumber, password, user_type } = registerData;
    
         try{
             const { data: signUpData , error: signUpError } = await supabase.auth.signUp({
@@ -104,8 +168,10 @@ export const AuthProvider = ({ children }) => {
             const { error: insertError } = await supabase.from("users")
             .insert({
                 id: user.id,
-                fullname,
-                user_type
+                first_name: firstName,
+                last_name: lastName,
+                phone: phoneNumber,
+                user_type,
             }).single();
         
             if(insertError){
@@ -127,6 +193,8 @@ export const AuthProvider = ({ children }) => {
                 return { error: `Error occured while signing out: ${error}`}
             }
             setSession(undefined);
+            setPartnerData(null);
+            setCustomerData(null);
             return { message: "signed out"}
        } 
         catch (err) {
@@ -139,15 +207,45 @@ export const AuthProvider = ({ children }) => {
     const signIn = async (user) => {
         const { email, password } = user; 
         try{
-            const {data, error} = await supabase.auth.signInWithPassword({
+            const {data: authData , error: authError} = await supabase.auth.signInWithPassword({
                 email,
                 password
-            })
-            if(error){
-                return { error: `Error occured while signing in ${error}`}
+            });
+            if(authError){
+                return { error: `Error occured while signing in ${authError}`}
             }
-            setSession(data)
-             return { message: "successfully signin"}
+
+            const { data: userData, error: usersError } = await supabase.auth.getUser();
+            
+            if(usersError){
+                return { error: `failed to get data ${usersError.message}`}
+            }
+
+            
+          const userId = userData.user.id;
+
+            const { data, error } = await supabase.from("users")
+            .select("*").eq("id", userId).single();
+
+            if(error){
+                  return { error: `failed to get data ${error.message}`}
+            }
+
+            if(data.user_type === "STORE OWNER"){
+                const { data: userPartnerData, error: partnerError } = await supabase.from("partners")
+                .select("*").eq("id", userId).single();
+
+                if(partnerError){
+                      return { error: `failed to get partner data ${partnerError.message}`}
+                }
+                 setSession(authData)
+                setPartnerData(userPartnerData);
+                return { message: "successfully partner signin"};
+            } 
+
+            setSession(authData);
+            setCustomerData(data);
+             return { message: "successfully customer signin"}
         } catch (err) {
             console.error(err);
         }
@@ -159,6 +257,8 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signOut,
     handeJoinWithUs,
+    partnerData,
+    customerData
     }
 
 
