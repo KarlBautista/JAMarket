@@ -6,8 +6,10 @@ const Register = () => {
     const { session, signUp } = useAuthContext();  
     const navigate = useNavigate();
     const [registerData, setRegisterData] = useState({
-        fullname: "",
+        firstName: "",
+        lastName: "",
         email: "",
+        phoneNumber: "",
         password: "",
     });
 
@@ -26,13 +28,16 @@ const Register = () => {
             alert("Passwords do not match!");
             return;
         }
-        if(!registerData.fullname || !registerData.email || !registerData.password){
+        if(!registerData.firstName || !registerData.lastName || !registerData.email || !registerData.password){
             alert("Please fill in all fields!");
             return;
         }
 
         try{
-           const response = await signUp({...registerData, user_type:"CUSTOMER"});
+           const response = await signUp({
+               ...registerData, 
+               user_type:"CUSTOMER"
+           });
            if(response.error){
             alert(response.error);
             return;
@@ -41,8 +46,10 @@ const Register = () => {
 
 
            setRegisterData({
-               fullname: "",
+               firstName: "",
+               lastName: "",
                email: "",
+               phoneNumber: "",
                password: "",
            });
            setConfirmPassword("");
@@ -72,14 +79,26 @@ const Register = () => {
 
         <form onSubmit={registerUser} className="register-form-data">
           <div className="form-group">
-            <label htmlFor="fullName">Full Name</label>
+            <label htmlFor="firstName">First Name</label>
             <input 
-              name='fullname'
+              name='firstName'
               type="text"
-              id="fullName"
-              value={registerData.fullname}
+              id="firstName"
+              value={registerData.firstName}
               onChange={handleInputChange}
-              placeholder='Enter your full name...'
+              placeholder='Enter your first name...'
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="lastName">Last Name</label>
+            <input 
+              name='lastName'
+              type="text"
+              id="lastName"
+              value={registerData.lastName}
+              onChange={handleInputChange}
+              placeholder='Enter your last name...'
             />
           </div>
 
@@ -92,6 +111,18 @@ const Register = () => {
               value={registerData.email}
               onChange={handleInputChange}
               placeholder='Enter your email address...'
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="phoneNumber">Phone Number</label>
+            <input 
+              name='phoneNumber'
+              type="tel"
+              id="phoneNumber"
+              value={registerData.phoneNumber}
+              onChange={handleInputChange}
+              placeholder='Enter your phone number...'
             />
           </div>
 
