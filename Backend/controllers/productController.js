@@ -65,7 +65,27 @@ const AddProduct = async (req, res) => {
         res.status(500).json({ error: err });
         console.error(err)
     }
-};
+};  
 
 
-module.exports = { AddProduct }
+const getProducts = async (req, res) => {
+    const userId = req.query.userId;
+    console.log(userId);
+    try{
+        const { data: productData, error: productError } = await supabase.from("products")
+        .select("*").eq("store_owner_id", userId);
+
+        if(productError){
+            console.log("dito nag error sa data error ng supabase");
+            return res.status(500).json({ error: productError.message });
+        }
+        
+        res.status(200).json({ message: "successfully got all the products", data: productData });
+    } catch(err) {
+        res.status(500).json({ error: "Failed to get all products "});
+        console.error(err)
+    }
+}
+
+
+module.exports = { AddProduct, getProducts }
