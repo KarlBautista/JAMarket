@@ -5,7 +5,7 @@ import Register from "./Register";
 import Profiles from "./Profiles";
 import Home from "../pages/Home";
 import Cart from "./Cart";
-import JoinWithUs from "./JoinWithUs";
+import JoinWithUs from "../pages/JoinWithUs";
 import StoreOwnerDashboard from "./StoreOwnerDashboard";
 import StoreOwnerLayout from "./StoreOwnerLayout";
 import Products from "./Products";
