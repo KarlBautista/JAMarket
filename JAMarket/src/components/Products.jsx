@@ -26,7 +26,7 @@ const Products = () => {
                     return;
                 }
                 const data = await response.json();
-                alert(data.message);
+              
                  setAllProducts(data.data)
 
 
