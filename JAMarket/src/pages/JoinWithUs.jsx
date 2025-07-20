@@ -1,9 +1,8 @@
 import React from 'react'
-import "../css/JoinWithUs.css"
-import JoinWithUsInputForm from './JoinWithUsInputForm'
+import JoinWithUsInputForm from '../components/JoinWithUsInputForm'
 const JoinWithUs = () => {
   return (
-    <div className='join-with-us-main-container'>
+    <div>
       <JoinWithUsInputForm />
     </div>
   )
