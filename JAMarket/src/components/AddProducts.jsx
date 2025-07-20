@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import "../css/AddProducts.css"
-
+import { useAuthContext } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 const AddProducts = () => {
+    const { partnerData } = useAuthContext();
+    const userId = partnerData.id;
+    const navigate = useNavigate();
+    console.log(userId)
     const [productData, setProductData] = useState({
         productName: '',
         description: '',
@@ -28,12 +33,38 @@ const AddProducts = () => {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('Product Data:', productData)
-        // Here you can add your submission logic
-        // For example: send data to backend API
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("productName", productData.productName);
+        formData.append("description",productData. description);
+        formData.append("price", productData.price);
+        formData.append("category", productData.category);
+        formData.append("stockQuantity", productData.stockQuantity);
+        formData.append("sku", productData.sku);
+        formData.append("productImage", productData.productImage);
+       
+        try{
+            const response = await fetch("http://localhost:5000/api/add-product", {
+                method: "POST",
+                body: formData,
+            });
+
+            if(!response.ok){
+                console.log(response.error);
+                return;
+            }
+            const data = await response.json();
+           handleCancel();
+           alert(data.message)
+
+        } catch(err){
+            console.error(err)
+        }
     }
+
+
 
     const handleCancel = () => {
         // Reset form or navigate back
@@ -45,7 +76,9 @@ const AddProducts = () => {
             stockQuantity: '',
             sku: '',
             productImage: null
-        })
+        });
+        
+
     }
 
   return (

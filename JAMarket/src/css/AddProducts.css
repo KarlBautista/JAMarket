@@ -1,8 +1,9 @@
 .add-product {
     width: 100%;
-    min-height: 100vh;
+    height: auto;
     background-color: #f8fafc;
     padding: 2rem;
+ 
 }
 
 .add-product-header{
