@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }) => {
         )
         return () => subscription.unsubscribe();
     }, []);
+   
 
     const handeJoinWithUs = async ( userData ) => {
         console.log(userData)

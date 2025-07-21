@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const AddProducts = () => {
     const { partnerData } = useAuthContext();
     const userId = partnerData.id;
+    const userStore = partnerData.store_name;
     const navigate = useNavigate();
     console.log(userId)
     const [productData, setProductData] = useState({
@@ -37,6 +38,7 @@ const AddProducts = () => {
         e.preventDefault()
         const formData = new FormData();
         formData.append("userId", userId);
+        formData.append("storeName", userStore);
         formData.append("productName", productData.productName);
         formData.append("description",productData. description);
         formData.append("price", productData.price);
