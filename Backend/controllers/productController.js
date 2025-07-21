@@ -4,6 +4,7 @@ const supabase = require("../config/supabaseClient");
 const AddProduct = async (req, res) => {
     const {
         userId,
+        storeName,
         productName,
         description,
         price,
@@ -52,6 +53,7 @@ const AddProduct = async (req, res) => {
             sku,
             product_image: productImageUrl,
             store_owner_id: userId,
+            store_name: storeName,
         }).single();
 
         if(insertProductError) {
@@ -85,7 +87,26 @@ const getProducts = async (req, res) => {
         res.status(500).json({ error: "Failed to get all products "});
         console.error(err)
     }
+};
+
+
+const getAllProductFromTable = async (req, res) => {
+    try{
+        const { data: allProductData, error: allProductError } = await supabase.from("products")
+            .select("*").limit(12);
+
+            if(allProductError){
+                 console.log("dito nag error sa all productError");
+                return res.status(500).json({ error: allProductError.message });
+               
+            }   
+
+            return res.status(200).json({ message: "Successfully got all the data from the products", data: allProductData });
+        
+    } catch(error){
+        return res.status(500).json({ error: error });
+    }
 }
 
 
-module.exports = { AddProduct, getProducts }
+module.exports = { AddProduct, getProducts, getAllProductFromTable}

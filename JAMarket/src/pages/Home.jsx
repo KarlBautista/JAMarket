@@ -7,7 +7,7 @@ const Home = () => {
   return (
     
     <div>
-        <p>{session?.user?.email}</p>
+      
         <Banner />
         <FeaturedProducts />
       
