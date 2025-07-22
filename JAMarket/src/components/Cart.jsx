@@ -20,13 +20,11 @@ const Cart = () => {
     }, []);
 
     const incrementQuantity = (id) => {
-      setQuantity(q => q + 1);
+      
     }
 
-    const decrementQuantity = (id) => {
-      if(quantity > 0) {
-          setQuantity(q => q - 1);
-      }
+    const decrementQuantity = (e) => {
+   
     }
 
     
@@ -65,10 +63,10 @@ const Cart = () => {
                         <p>{product.category}</p>
                       </div>
                       <div className="order-product-store-name">
-                        <p>Karls store</p>
+                        <p>{product.store_name}</p>
                         <div className="quantity-input">
                           <button onClick={() => decrementQuantity(product.product_id)}>-</button>
-                          <p></p>
+                          <p>{product.quantity}</p>
                           <button onClick={() => incrementQuantity(product.product_id)}>+</button>
                         </div>
                         <button>Delete</button>
