@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useAuthContext } from "./AuthContext";
 const CartContext = createContext();
 
@@ -8,11 +8,13 @@ export const CartProvider = ({ children }) => {
     const [ cart, setCart ] = useState([]);
     const [ cartProduct, setCartProduct ] = useState([]);
     const { customerData } = useAuthContext();
+    let addToCartBtn = 0;
+    
     const userId = customerData?.id;
 
-    useEffect(() => {
+     const getCart = useCallback(async () => {
         if (!userId) return;
-        const getCart = async () => {
+       
               console.log("✅ useEffect running - fetching cart");
             try{
                 const response = await fetch(`http://localhost:5000/api/get-cart?userId=${userId}`)
@@ -25,9 +27,18 @@ export const CartProvider = ({ children }) => {
             } catch(err){
                 console.error(err);
             }
-        }
+        }, [userId]);
 
-        const getCartProduct = async () => {
+        useEffect(() => {
+            getCart();
+        }, [getCart]);
+    
+      
+  
+   
+
+    useEffect(() => {
+         const getCartProduct = async () => {
             try{
                const productId = cart.map((c) => c.product_id);
               const query = productId.map((id) => `id=${id}`).join("&");
@@ -43,14 +54,12 @@ export const CartProvider = ({ children }) => {
                 console.error(err);
             }
         }
-        getCart();
-        getCartProduct();
-    }, [userId]);
-    console.log(cartProduct);
+          getCartProduct();
+       
+    }, [cart]);
    
-
-
-    const addToCart = async (productId, customerId) => {
+  
+   const addToCart = async (productId, customerId) => {
         
         try{
             const response = await fetch("http://localhost:5000/api/add-to-cart", {
@@ -62,17 +71,21 @@ export const CartProvider = ({ children }) => {
             });
             if(!response.ok){
                 console.error("failed to insert to cart", response.error);
+                return
             }
-     
-
+            await getCart();
+            
         } catch(err){
             console.error(err);
         }
     }
 
+  
+
     const value = {
         cart,
         addToCart,
+        cartProduct,
     }
 
     return(
