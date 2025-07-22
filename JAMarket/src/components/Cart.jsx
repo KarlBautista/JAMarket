@@ -7,11 +7,9 @@ import { useCartContext } from '../contexts/CartContext'
 import Reacts from "../assets/react.svg"
 const Cart = () => {
     const navigate = useNavigate();
-    const { cart } = useCartContext();
+    const { cart, cartProduct } = useCartContext();
     const { session } = useAuthContext(); 
     const [ quantity, setQuantity ] = useState(0);
-
-
 
 
     useEffect(() => {
@@ -21,15 +19,19 @@ const Cart = () => {
         }
     }, []);
 
-    const incrementQuantity = () => {
+    const incrementQuantity = (id) => {
       setQuantity(q => q + 1);
     }
 
-    const decrementQuantity = () => {
+    const decrementQuantity = (id) => {
       if(quantity > 0) {
           setQuantity(q => q - 1);
       }
     }
+
+    
+
+   
 
 
   return (
@@ -41,40 +43,43 @@ const Cart = () => {
       <div className="cart-body">
         <div className="cart-products">
             <div className="cart-number-of-products">
-              <p>Items(1)</p>
+              <p>Items {cartProduct?.length}</p>
             </div>
             <div className="order-products">
-              <div className="order-product-row">
-                <div className="order-product-image-container">
-                  <img src={Reacts} alt="" />
-                </div>
-                <div className="order-product-informations">
-                  <div className="order-product-name-price">
-                      <div className="order-product-name">
-                      <p>FENDER</p>
-                    </div>
-                    <div className="order-product-price">
-                      <p>$666</p>
-                    </div>
-                  </div>
-                  <div className="order-product-category">
-                    <p>Guitar</p>
-                  </div>
-                  <div className="order-product-store-name">
-                    <p>Karls store</p>
-                    <div className="quantity-input">
-                     <button onClick={() => decrementQuantity()}>-</button>
-                     <p>{quantity}</p>
-                     <button onClick={() => incrementQuantity()}>+</button>
-                    </div>
-
-                    <button>Delete</button>
-                   
-                  </div>
-                
-                </div>
+                {cartProduct?.map((product, index) => {
               
-              </div>
+                  return <div key={index} className="order-product-row">
+                    <div className="order-product-image-container">
+                      <img src={product.product_image} alt={product.product_name} />
+                    </div>
+                    <div className="order-product-informations">
+                      <div className="order-product-name-price">
+                        <div className="order-product-name">
+                          <p>{product.product_name}</p>
+                        </div>
+                        <div className="order-product-price">
+                          <p>${product.price}</p>
+                        </div>
+                      </div>
+                      <div className="order-product-category">
+                        <p>{product.category}</p>
+                      </div>
+                      <div className="order-product-store-name">
+                        <p>Karls store</p>
+                        <div className="quantity-input">
+                          <button onClick={() => decrementQuantity(product.product_id)}>-</button>
+                          <p></p>
+                          <button onClick={() => incrementQuantity(product.product_id)}>+</button>
+                        </div>
+                        <button>Delete</button>
+                      </div>
+                    </div>
+                  </div>
+              
+                })}
+             
+              
+           
               
 
             </div>

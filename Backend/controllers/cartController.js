@@ -36,25 +36,30 @@ const getCart = async (req, res) => {
 
 
 const getCartProduct = async (req, res) => {
-    console.log("This is running");
-    const ids = req.query.id;
-    const productId = Array.isArray(ids) ? ids : [ids];
-    console.log(productId);
-    try{
-        const { data, error } = await supabase.from("products")
-        .select("*").in("product_id", productId);
+  console.log("this is running");
+  const ids = req.query.id;
+  const productIds = ids.map((id) => Array.isArray(id) ? id : [id]);
+  console.log(productIds);
+  const queryIds = [...new Set(productIds)];
+  try{
+    const { data: productData, error: productError} = await supabase.from("products").select("*").in("product_id", queryIds);
 
-          if(error){
-        return res.status(500).json({ error: error});
-        }
-    return res.status(200).json({ message: "tangina gumana na", data: data});
-    } 
-    catch(err){
-        return res.status(500).json({ error: error});
+    if(productError){
+        return res.status(500).json({ error: productError });
     }
+    console.log(productData);
 
+    const allCartData = ids.map((id) => { 
+    return productData.find((p) => p.product_id === id);
+    });
 
+    res.status(200).json({ message: "nakuha na lahat sa cart", data: allCartData});
+    
+  
+  } catch(err){
+    return res.status(500).json({ error: err })
+  }
+};
 
-}
 
 module.exports = { addToCart, getCart, getCartProduct }
