@@ -32,9 +32,8 @@ export const CartProvider = ({ children }) => {
         useEffect(() => {
             getCart();
         }, [getCart]);
+   
     
-      
-  
    
 
     useEffect(() => {
@@ -49,7 +48,14 @@ export const CartProvider = ({ children }) => {
 
                const data = await response.json();
                alert(data.message);
-               setCartProduct(data.data)
+               const updatedProducts = data?.data?.map((product) => {
+                const match = cart.find((c) => c.product_id === product.product_id);
+                return {
+                    ...product,
+                    quantity: match?.quantity || 1
+                };
+               });
+               setCartProduct(updatedProducts);
             } catch(err){
                 console.error(err);
             }
@@ -86,6 +92,7 @@ export const CartProvider = ({ children }) => {
         cart,
         addToCart,
         cartProduct,
+    
     }
 
     return(
