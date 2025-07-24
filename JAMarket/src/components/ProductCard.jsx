@@ -18,8 +18,12 @@ const ProductCard = ({ product }) => {
     }
 
     try{
+      if(!userId){
+        alert("You need to signin first");
+        return;
+      }
       const response = await addToCart(product.product_id, userId);
-     
+ 
       alert("successfully added to cart");
     } catch(err){
       console.error(err)
@@ -40,7 +44,7 @@ const ProductCard = ({ product }) => {
             </div>
 
             <div className='product-price-add-to-cart'>
-                <p className='product-card-price'>${product.price}</p>
+                <p className='product-card-price'>₱{product.price}</p>
                 <button onClick={() => handleAddToCart()} className='product-card-add-to-cart'>Add to Cart</button>
             </div>
         </div>

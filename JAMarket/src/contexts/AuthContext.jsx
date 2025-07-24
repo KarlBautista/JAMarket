@@ -169,6 +169,7 @@ export const AuthProvider = ({ children }) => {
             const { error: insertError } = await supabase.from("users")
             .insert({
                 id: user.id,
+                email,
                 first_name: firstName,
                 last_name: lastName,
                 phone: phoneNumber,
@@ -180,6 +181,17 @@ export const AuthProvider = ({ children }) => {
             };
           
             setSession(signUpData);
+            const { data, error } = await supabase.auth.getUser();
+            if(error){
+                return { error: error };
+            } 
+            const userId = data.user.id;
+            const { data: signedUpData, error: signedUpError } = await supabase.from("users")
+            .select("*").eq("id", userId).single();
+            if(signedUpError){
+                return { error: signedUpError };
+            }
+            setCustomerData(signedUpData);
             return { message: "Successfullly registered user"}
         }
         catch(err) {
