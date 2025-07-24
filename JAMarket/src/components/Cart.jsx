@@ -7,10 +7,16 @@ import { useCartContext } from '../contexts/CartContext'
 import Reacts from "../assets/react.svg"
 const Cart = () => {
     const navigate = useNavigate();
-    const { cart, cartProduct } = useCartContext();
+    const { cart, cartProduct, deleteProductItem } = useCartContext();
     const { session } = useAuthContext(); 
     const [ quantity, setQuantity ] = useState(0);
 
+
+       const subtotal = cartProduct.reduce((sum, item) => sum + item.price, 0);
+    const shipping = 100;
+    const tax = subtotal * 0.12;
+    
+ 
 
     useEffect(() => {
         if(session === undefined){
@@ -19,14 +25,19 @@ const Cart = () => {
         }
     }, []);
 
-    const incrementQuantity = (id) => {
-      
+    const deleteProduct = async (index) => {
+      try{
+        const response = await deleteProductItem(cart[index].id);
+        if(!response.success){
+          console.log(response.error);
+        }
+        console.log(response.message);
+      } catch(err){
+        console.error(err);
+      }
     }
 
-    const decrementQuantity = (e) => {
    
-    }
-
     
 
    
@@ -38,14 +49,20 @@ const Cart = () => {
         <h1>Your Cart</h1>
         <a href="">- Continue Shopping</a>
       </div>
-      <div className="cart-body">
+      {cartProduct.length === 0 ? (
+        <div className='empty-cart-body'>
+          <p id='cart-is-empty'>Your Cart is Empty</p>
+          <p>Looks like you haven't added any items to your cart yet.</p>
+          <button>Start Shopping</button>
+        </div>
+      ) : (
+         <div className="cart-body">
         <div className="cart-products">
             <div className="cart-number-of-products">
-              <p>Items {cartProduct?.length}</p>
+              <p>{cartProduct?.length} ITEMS</p>
             </div>
             <div className="order-products">
                 {cartProduct?.map((product, index) => {
-              
                   return <div key={index} className="order-product-row">
                     <div className="order-product-image-container">
                       <img src={product.product_image} alt={product.product_name} />
@@ -56,36 +73,50 @@ const Cart = () => {
                           <p>{product.product_name}</p>
                         </div>
                         <div className="order-product-price">
-                          <p>${product.price}</p>
+                          <p>₱{product.price}</p>
                         </div>
                       </div>
                       <div className="order-product-category">
                         <p>{product.category}</p>
                       </div>
                       <div className="order-product-store-name">
-                        <p>{product.store_name}</p>
+                        <p>By {product.store_name}</p>
                         <div className="quantity-input">
-                          <button onClick={() => decrementQuantity(product.product_id)}>-</button>
-                          <p>{product.quantity}</p>
-                          <button onClick={() => incrementQuantity(product.product_id)}>+</button>
+                          <p>Qty: {product.quantity}</p>
                         </div>
-                        <button>Delete</button>
+                        <button className="delete-btn" onClick={() => deleteProduct(index)}>Remove</button>
                       </div>
                     </div>
                   </div>
-              
                 })}
              
-              
-           
-              
 
             </div>
         </div>
         <div className="order-summary">
-
+                <h3>Order Summary</h3>
+                <div className="order-summary-form">
+                  <div className="summary-row">
+                    <h4>Subtotal</h4>
+                    <span className="amount">₱{subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="summary-row">
+                    <h4>Shipping</h4>
+                    <span className="amount">₱{shipping.toFixed(2)}</span>
+                  </div>
+                  <div className="summary-row">
+                    <h4>Tax (12%)</h4>
+                    <span className="amount">₱{tax.toFixed(2)}</span>
+                  </div>
+                  <div className="summary-total">
+                    <h3>Total</h3>
+                    <span className="total-amount">₱{(subtotal + shipping + tax).toFixed(2)}</span>
+                  </div>
+                  <button className="checkout-btn">Proceed to Checkout</button>
+                </div>
         </div>
       </div>
+      )}
     </div>
   )
 }
