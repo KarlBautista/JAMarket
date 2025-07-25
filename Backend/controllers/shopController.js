@@ -29,4 +29,20 @@ const getAllProducts = async (req, res) => {
     }
 }
 
-module.exports = { getAllShops, getAllProducts }
+
+const getAllProductsFromStore = async (req, res) => {
+    const userId = req.query.id;
+    try{
+        const { data: productsFromStoreData, error: productsFromStoreError } = await supabase.from("products")
+        .select("*").eq("store_owner_id", userId);
+        
+        if(productsFromStoreError){
+            return res.status(500).json({ error: productsFromStoreError });
+        }
+        res.status(200).json({ message: "successfully got all the products from this store", data: productsFromStoreData });
+    }  catch(err){
+        res.status(404).json({ erorr: err });
+    }
+}
+
+module.exports = { getAllShops, getAllProducts, getAllProductsFromStore }
