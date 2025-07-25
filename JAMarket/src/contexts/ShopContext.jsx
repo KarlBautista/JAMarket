@@ -41,10 +41,40 @@ export const ShopProvider = ({ children }) => {
         getAllProducts();
     }, []);
 
+
+    const getAllProductFromStore = async (id) => {
+        try{
+            const response = await fetch(`http://localhost:5000/api/all-products-from-store?id=${id}`);
+            if(!response.ok){
+                console.error(response.error);
+                return;
+            }
+            const data = await response.json();
+        
+            return data.data;
+           
+        } catch(err){
+            console.error(err);
+        }
+    }
+
+    const getShopData = (id) => {
+        try{
+            const shop = shops.find((shop) => shop.id === id);
+            if(shop !== null ){
+                return shop;
+            }
+        } catch(err){
+            console.error(err)
+        }
+    }
+
    console.log(products)
     const value = {
      shops,
      products,
+     getAllProductFromStore,
+     getShopData,
     }
 
     return(
