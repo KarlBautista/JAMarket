@@ -1,0 +1,149 @@
+.shops-page-container {
+    min-height: 100vh;
+    background-color: #f8fafc;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.shops-header {
+    background: linear-gradient(135deg, #312E81 0%, #6366f1 100%);
+    color: white;
+    padding: 80px 100px 60px 100px;
+    text-align: center;
+}
+
+.shops-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+}
+
+.shops-header p {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.shops-content {
+    padding: 60px 100px;
+}
+
+.shops-stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-bottom: 50px;
+    padding: 40px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.shop-stat-item {
+    text-align: center;
+}
+
+.shop-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #6366f1;
+    margin: 0 0 8px 0;
+    line-height: 1;
+}
+
+.shop-stat-label {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.shops-section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #312E81;
+    margin: 0 0 40px 0;
+    text-align: center;
+}
+
+.shops-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+.no-shops-message {
+    text-align: center;
+    padding: 80px 40px;
+    background-color: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.no-shops-message h3 {
+    font-size: 1.5rem;
+    color: #312E81;
+    margin: 0 0 16px 0;
+    font-weight: 600;
+}
+
+.no-shops-message p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .shops-header,
+    .shops-content {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    
+    .shops-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .shops-header {
+        padding: 60px 25px 40px 25px;
+    }
+    
+    .shops-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .shops-header p {
+        font-size: 1.1rem;
+    }
+    
+    .shops-content {
+        padding: 40px 25px;
+    }
+    
+    .shops-stats {
+        flex-direction: column;
+        gap: 30px;
+        padding: 30px;
+    }
+    
+    .shops-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .shops-section-title {
+        font-size: 1.75rem;
+    }
+}

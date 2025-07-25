@@ -10,9 +10,7 @@ const Cart = () => {
     const { cart, cartProduct, deleteProductItem } = useCartContext();
     const { session } = useAuthContext(); 
     const [ quantity, setQuantity ] = useState(0);
-
-
-       const subtotal = cartProduct.reduce((sum, item) => sum + item.price, 0);
+    const subtotal = cartProduct.reduce((sum, item) => sum + item.price, 0);
     const shipping = 100;
     const tax = subtotal * 0.12;
     
