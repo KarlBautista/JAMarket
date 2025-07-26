@@ -36,10 +36,10 @@ const Shops = () => {
           </div>
         </div>
 
-        {/* Section Title */}
+  
         <h2 className="shops-section-title">All Music Stores</h2>
 
-        {/* Shops Grid */}
+      
         {shops && shops.length > 0 ? (
           <div className='shops-container'>
             {shops.map((shop) => {
