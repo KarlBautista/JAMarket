@@ -108,5 +108,19 @@ const getAllProductFromTable = async (req, res) => {
     }
 }
 
+const getProduct = async (req, res) => {
+    const productId = req.query.id;
+    try{
+        const { data: productData, error: productError } = await supabase.from("products")
+        .select("*").eq("product_id", productId).single();
+        if(productError){
+            return res.status(500).json({ error: productError });
+        }
+        return res.status(200).json({ message: "successfully got the product", data: productData });
+    } catch (err){
+        return res.status(404).json({ error: err });
+    }
+}
 
-module.exports = { AddProduct, getProducts, getAllProductFromTable}
+
+module.exports = { AddProduct, getProducts, getAllProductFromTable, getProduct}

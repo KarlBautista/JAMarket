@@ -31,8 +31,16 @@ const ProductCard = ({ product }) => {
 
   }
 
+  const handleProductPage = async () => {
+    try{
+      navigate(`/product-page?id=${product.product_id}`);
+    } catch (err){
+      console.error(err);
+    }
+  }
+
   return (
-    <div className='product-card-container'>
+    <div className='product-card-container' onClick={() => handleProductPage()}>
         <div className="img-product-card">
             <img src={product.product_image} alt="" />
         </div>
