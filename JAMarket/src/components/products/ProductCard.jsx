@@ -11,10 +11,13 @@ const ProductCard = ({ product }) => {
   const userId = customerData?.id;
 
   
-  const handleAddToCart = async () => {
-     if(session === null){
+  const handleAddToCart = async (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    
+    if(session === null){
       alert("You need to login first");
       navigate("/login");
+      return;
     }
 
     try{
@@ -28,7 +31,6 @@ const ProductCard = ({ product }) => {
     } catch(err){
       console.error(err)
     }
-
   }
 
   const handleProductPage = async () => {
@@ -53,7 +55,7 @@ const ProductCard = ({ product }) => {
 
             <div className='product-price-add-to-cart'>
                 <p className='product-card-price'>₱{product.price}</p>
-                <button onClick={() => handleAddToCart()} className='product-card-add-to-cart'>Add to Cart</button>
+                <button onClick={(e) => handleAddToCart(e)} className='product-card-add-to-cart'>Add to Cart</button>
             </div>
         </div>
 
