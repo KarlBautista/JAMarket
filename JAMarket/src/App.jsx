@@ -8,6 +8,7 @@ import { CartProvider } from './contexts/CartContext'
 import { ShopProvider } from './contexts/ShopContext'
 import Home from './pages/Home'
 import { ProductProvider } from './contexts/ProductContext'
+import { OrderProvider } from './contexts/OrdersContext'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
     <ProductProvider>
     <AuthProvider>
       <CartProvider>
+         <OrderProvider>
       <NavBar />
       <main>
         <Outlet /> {
@@ -23,6 +25,7 @@ function App() {
         }
       </main>
       <Footer />
+        </OrderProvider>
       </CartProvider>
     </AuthProvider>
     </ProductProvider>
