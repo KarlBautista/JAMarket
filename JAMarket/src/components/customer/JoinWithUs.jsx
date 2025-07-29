@@ -1,5 +1,5 @@
 import React from 'react'
-import "../css/JoinWithUs.css"
+import "../../css/JoinWithUs.css"
 import JoinWithUsInputForm from './JoinWithUsInputForm'
 const JoinWithUs = () => {
   return (

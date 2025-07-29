@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import "../css/Register.css";
-import  { useAuthContext } from "../contexts/AuthContext"
+import "../../css/Register.css";
+import  { useAuthContext } from "../../contexts/AuthContext"
 import { useNavigate } from 'react-router-dom';
 const Register = () => {
     const { session, signUp } = useAuthContext();  

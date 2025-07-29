@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../../services/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -8,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [session, setSession] = useState(undefined);
     const [partnerData, setPartnerData] = useState(null);
     const [customerData, setCustomerData] = useState(null)
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getSession = async () => {
@@ -205,9 +206,11 @@ export const AuthProvider = ({ children }) => {
             if(error) {
                 return { error: `Error occured while signing out: ${error}`}
             }
-            setSession(undefined);
+         
+            setSession(null);
             setPartnerData(null);
             setCustomerData(null);
+            navigate("/");
             return { message: "signed out"}
        } 
         catch (err) {

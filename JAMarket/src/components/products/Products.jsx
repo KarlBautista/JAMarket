@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import "../css/Products.css"
-import StoreOwnerNavigation from './StoreOwnerNavigation'
-import AddProducts from './AddProducts'
-import { useAuthContext } from '../contexts/AuthContext'
+import "../../css/Products.css"
+import StoreOwnerNavigation from '../store_owner/StoreOwnerNavigation'
+import AddProducts from '../store_owner/AddProducts'
+import { useAuthContext } from '../../contexts/AuthContext'
 const Products = () => {
     const [showAddProduct, setShowAddProduct] = useState(false)
     const { partnerData } = useAuthContext();

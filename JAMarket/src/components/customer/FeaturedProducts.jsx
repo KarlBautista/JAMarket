@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import ProductCard from './ProductCard'
-import "../css/FeaturedProducts.css"
+import ProductCard from '../products/ProductCard'
+import "../../css/FeaturedProducts.css"
 const FeaturedProducts = () => {
   const [featuredProductsData, setFeaturedProductsData] = useState([]);
   useEffect(() => {

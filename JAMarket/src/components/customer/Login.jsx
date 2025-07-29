@@ -1,7 +1,7 @@
 import React from 'react'
-import "../css/Login.css"
+import "../../css/Login.css"
 import { useState } from 'react'
-import { useAuthContext } from '../contexts/AuthContext'
+import { useAuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Login = () => {
         navigate("/store-owner/dashboard");
       } 
       else if (response.message === "successfully customer signin"){
-        navigate("/profiles");
+        navigate("/");
       }
     } catch(err) {
       console.error(err);

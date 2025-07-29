@@ -1,12 +1,12 @@
 import React from 'react'
-import "../css/StoreOwnerNavigation.css"
-import ReactSvg from "../assets/react.svg"
-import Dashboard from "../assets/dashboard.png"
-import Products from "../assets/box.png"
-import Customer from "../assets/customer.png"
-import Order from "../assets/order.png";
-import Logout from "../assets/logout.png"
-import { useAuthContext } from '../contexts/AuthContext'
+import "../../css/StoreOwnerNavigation.css"
+import ReactSvg from "../../assets/react.svg"
+import Dashboard from "../../assets/dashboard.png"
+import Products from "../../assets/box.png"
+import Customer from "../../assets/customer.png"
+import Order from "../../assets/order.png";
+import Logout from "../../assets/logout.png"
+import { useAuthContext } from '../../contexts/AuthContext'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 const StoreOwnerNavigation = () => {
     const { partnerData, signOut } = useAuthContext();

@@ -1,10 +1,10 @@
 import React from 'react'
-import "../css/StoreOwnerDashboard.css"
-import { useAuthContext } from '../contexts/AuthContext'
+import "../../css/StoreOwnerDashboard.css"
+import { useAuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import dollarSymbol from "../assets/dollar-symbol.png"
-
+import dollarSymbol from "../../assets/dollar-symbol.png"
 import StoreOwnerNavigation from './StoreOwnerNavigation'
+
 const StoreOwnerDashboard = () => {
     const navigate = useNavigate();
     const { session, partnerData, signOut } = useAuthContext();
