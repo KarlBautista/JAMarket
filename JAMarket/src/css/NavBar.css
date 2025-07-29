@@ -134,3 +134,74 @@
     animation: underLineGrow 0.5s forwards;
 }
 
+
+.user-icon-container{
+    position: absolute;
+    width: 100px;
+    height: 150px;
+    background-color: white;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    top: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 8px 8px;
+    z-index: 1000;
+}
+
+#signin{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #312E81;
+}
+
+#signup{
+  height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #312E81;
+}
+
+#profile{
+    height: 33.33%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #312E81;
+}
+
+#orders{
+    height: 33.33%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #312E81;
+}
+
+#logout{
+    height: 33.33%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #312E81;
+    cursor: pointer;
+}
+
+.user-icon-active{
+    background-color: #312E81;
+  
+}
+
+.user-icon-active a {
+    color: white ;
+    text-decoration: none;
+}

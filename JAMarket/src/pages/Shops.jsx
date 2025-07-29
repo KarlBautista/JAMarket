@@ -1,6 +1,6 @@
 import React from 'react'
 import "../css/Shops.css"
-import ShopCard from "../components/ShopCard"
+import ShopCard from "../components/customer/ShopCard"
 import { useShopContext } from '../contexts/ShopContext'
 
 const Shops = () => {

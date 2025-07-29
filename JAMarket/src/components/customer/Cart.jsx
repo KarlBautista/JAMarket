@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import "../css/Cart.css"
-import { useAuthContext } from '../contexts/AuthContext'
+import "../../css/Cart.css"
+import { useAuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useCartContext } from '../contexts/CartContext'
-import Reacts from "../assets/react.svg"
+import { useCartContext } from '../../contexts/CartContext'
+import Reacts from "../../assets/react.svg"
 const Cart = () => {
     const navigate = useNavigate();
     const { cart, cartProduct, deleteProductItem } = useCartContext();

@@ -1,9 +1,9 @@
 import React from 'react'
-import "../css/ProductCard.css"
-import { useAuthContext } from '../contexts/AuthContext'
+import "../../css/ProductCard.css"
+import { useAuthContext } from '../../contexts/AuthContext'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCartContext } from "../contexts/CartContext"
+import { useCartContext } from "../../contexts/CartContext"
 const ProductCard = ({ product }) => {
   const { session, customerData } = useAuthContext();
   const { addToCart } = useCartContext();

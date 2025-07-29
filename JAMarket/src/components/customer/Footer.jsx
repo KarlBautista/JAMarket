@@ -1,5 +1,5 @@
 import React from 'react'
-import "../css/Footer.css"
+import "../../css/Footer.css"
 const Footer = () => {
   return (
     <footer class="footer-container">
@@ -9,7 +9,7 @@ const Footer = () => {
   <div class="footer-section">
     <h3>JAMarket</h3>
     <p>Your one-stop shop for quality music <br />gear and accessories.</p>
-  </div>
+  </div>  
 
   <div class="footer-section">
     <h3>Shop</h3>

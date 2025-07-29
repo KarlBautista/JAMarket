@@ -1,17 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
-import Login from "./Login";
-import Register from "./Register";
-import Profiles from "./Profiles";
-import Home from "../pages/Home";
-import Cart from "./Cart";
-import JoinWithUs from "../pages/JoinWithUs";
-import StoreOwnerDashboard from "./StoreOwnerDashboard";
-import StoreOwnerLayout from "./StoreOwnerLayout";
-import Products from "./Products";
-import Shops from "../pages/Shops"
-import StorePage from "../pages/StorePage";
-import ProductPage from "../pages/ProductPage";
+import App from "../../App";
+import Login from "../customer/Login";
+import Register from "../customer/Register";
+import Profiles from "../customer/Profiles";
+import Home from "../../pages/Home";
+import Cart from "../customer/Cart";
+import JoinWithUs from "../../pages/JoinWithUs";
+import StoreOwnerDashboard from "../store_owner/StoreOwnerDashboard";
+import StoreOwnerLayout from "../store_owner/StoreOwnerLayout";
+import Products from "../products/Products";
+import Shops from "../../pages/Shops"
+import StorePage from "../../pages/StorePage";
+import ProductPage from "../../pages/ProductPage";
 
 const router = createBrowserRouter([
     {

@@ -1,9 +1,118 @@
 .profiles{
-    height: 800px;
+    min-height: 100vh;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8fafc;
+    padding: 32px;
+    font-family: "Segoe UI", sans-serif;
 }
 
-.profiles p {
-    font-size: 4rem;
-    color: black;
+.profile-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    gap: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.profile-form h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #312E81;
+    margin: 0;
+    text-align: center;
+}
+
+.profile-form-img-container{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #6366f1;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
+.profile-form-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-form-information-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.profile-form-information-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.information-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.information-group:hover {
+    background-color: #f1f5f9;
+    border-color: #6366f1;
+}
+
+.information-group p:first-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #312E81;
+    margin: 0;
+    min-width: 80px;
+}
+
+.information-group p:last-child {
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+    margin: 0;
+    text-align: right;
+    flex: 1;
+    margin-left: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profiles {
+        padding: 20px;
+    }
+    
+    .profile-form {
+        padding: 30px 20px;
+        max-width: 100%;
+    }
+    
+    .information-group {
+        padding: 16px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .information-group p:last-child {
+        text-align: left;
+        margin-left: 0;
+    }
 }

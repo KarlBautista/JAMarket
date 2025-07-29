@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import "../css/AddProducts.css"
-import { useAuthContext } from '../contexts/AuthContext'
+import "../../css/AddProducts.css"
+import { useAuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 const AddProducts = () => {
     const { partnerData } = useAuthContext();

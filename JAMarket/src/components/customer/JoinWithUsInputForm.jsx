@@ -1,7 +1,7 @@
 import React from 'react'
-import "../css/JoinWithUsInputForm.css"
+import "../../css/JoinWithUsInputForm.css"
 import { useState } from 'react'
-import { useAuthContext } from '../contexts/AuthContext'
+import { useAuthContext } from '../../contexts/AuthContext'
 const JoinWithUsInputForm = () => {
     const { handeJoinWithUs } = useAuthContext();
     const [userData, setUserData] = useState({

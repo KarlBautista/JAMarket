@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "../css/StorePage.css"
 import { useSearchParams } from 'react-router-dom'
 import { useShopContext } from '../contexts/ShopContext'
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/products/ProductCard";
 import ReactSvg from "../assets/react.svg"
 const StorePage = () => {
   const [searchParams] = useSearchParams();

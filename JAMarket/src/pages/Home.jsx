@@ -1,6 +1,6 @@
 import React from 'react'
-import Banner from '../components/Banner'
-import FeaturedProducts from '../components/FeaturedProducts'
+import Banner from '../components/customer/Banner'
+import FeaturedProducts from '../components/customer/FeaturedProducts'
 import { useAuthContext } from '../contexts/AuthContext'
 const Home = () => {
   const {session} = useAuthContext();

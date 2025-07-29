@@ -1,6 +1,5 @@
 import React from 'react'
-import "../css/ShopCard.css"
-import ReactSvg from "../assets/react.svg"
+import "../../css/ShopCard.css"
 import { useNavigate } from 'react-router-dom'
 const ShopCard = ({ shop }) => {
     const navigate = useNavigate();
