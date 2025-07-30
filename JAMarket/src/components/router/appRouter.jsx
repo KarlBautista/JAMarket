@@ -12,6 +12,7 @@ import Products from "../products/Products";
 import Shops from "../../pages/Shops"
 import StorePage from "../../pages/StorePage";
 import ProductPage from "../../pages/ProductPage";
+import Orders from "../../pages/Orders";
 
 const router = createBrowserRouter([
     {
@@ -26,7 +27,8 @@ const router = createBrowserRouter([
             {path: "/join-with-us", element: <JoinWithUs />},
             {path: "/Shops", element: <Shops />},
             {path: "store-page", element: <StorePage />},
-            {path: "/product-page", element: <ProductPage />}
+            {path: "/product-page", element: <ProductPage />},
+            {path: "/orders", element: <Orders />}
         ]
     },
     {
