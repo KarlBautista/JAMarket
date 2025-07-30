@@ -1,0 +1,47 @@
+.order-container{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 15px;
+}
+
+.order-header-container{
+    height: 15%;
+    background-color: #312E81;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.order-btn-container{
+    width: 50%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+.order-btn-container button {
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    background-color: hsl(242, 47%, 50%);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+
+}
+
+.orders-container{
+    width: 50%;
+    height: 80%;
+    overflow-y: auto;
+    
+ 
+}

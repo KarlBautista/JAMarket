@@ -43,6 +43,8 @@ const Cart = () => {
        if(mop === "cod"){
         try{
            const response = await placeOrder(userId, cartProduct, subtotal, mop);
+           
+
         } catch(err){
           console.error(err);
         }
