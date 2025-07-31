@@ -4,9 +4,11 @@ import { useOrdersContext } from '../contexts/OrdersContext'
 import { useState } from 'react';
 import OrderCard from '../components/customer/OrderCard';
 const Orders = () => {
-  const { orders } = useOrdersContext();
-    console.log("ito mga order mo", orders)
+  const { orders, orderItems } = useOrdersContext();
+    console.log("ito mga order mo", orders);
+    console.log("ito order items", orderItems)
  const [ activeTab, setActiveTab ] = useState("to-ship");
+
 
  const handleActiveTab = (tab) => {
   setActiveTab(tab);
@@ -25,7 +27,25 @@ const Orders = () => {
         <div className="orders-container">
         { activeTab === "to-ship" ? (
           <div>
-              {orders.map((order) => <OrderCard key={order.id} order={order} />)}
+          {
+            orders && orderItems.order ? (
+                orders
+                  .filter(order => order.status === "pending")
+                  .flatMap(order => 
+                    orderItems.order
+                      .filter(orderItem => orderItem.order.id === order.id)
+                      .map(orderItem => (
+                        <OrderCard 
+                          key={`${order.id}-${orderItem.order.id}`}
+                          order={order}
+                          orderItem={orderItem}
+                        />
+                    ))
+                )
+            ) : (
+              <div>Loading orders...</div>
+            )
+          }
           </div>
         
         ) : activeTab === "shipped" ? (

@@ -56,7 +56,31 @@ const getAllOrders = async (req, res) => {
 }
 
 const getAllOrderItems = async (req, res) => {
+    const ids = req.query.orderId;
+    const orderIds =  Array.isArray(ids) ? ids : [ids];
+    try{
+        const { data: orderItemsData, error: orderItemsError } = await supabase.from("orders_item")
+        .select("*").in("order_id", orderIds);
+        if(orderItemsError){
+        
+            res.status(500).json({ error: orderItemsError });
+        }
+        const productIds = orderItemsData.map((order) => order.product_id);
+        const { data: productOrderItemData, error: productOrderItemError} = await 
+        supabase.from("products").select("*").in("product_id", productIds);
+        if(productOrderItemError){
+            res.status(500).json({ error: productOrderItemError });
+        }
+        res.status(200).json({ message: "got all the orderItem and products", 
+                            orderItem: orderItemsData, 
+                            orderProducts: productOrderItemData })
+    } catch(err){
+          
+        res.status(500).json({ error: err });
+    }
+
+    
     
 }
 
-module.exports = { placeOrder, getAllOrders }
+module.exports = { placeOrder, getAllOrders, getAllOrderItems }
