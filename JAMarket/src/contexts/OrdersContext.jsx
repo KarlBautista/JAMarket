@@ -7,6 +7,7 @@ export const useOrdersContext = () => useContext(OrdersContext);
 
 export const OrderProvider = ({ children }) => {
       const [ orders, setOrders ] = useState([]);
+      const [ orderItems, setOrderItems ] = useState({ order: [], products: []});
       const { customerData } = useAuthContext();
     useEffect(() => {
         const getAllOrders = async () => {
@@ -24,25 +25,40 @@ export const OrderProvider = ({ children }) => {
                 const data = await response.json();
                 
                 console.log("Orders fetched:", data);
-                setOrders(data.data);
+                setOrders(data.data || []);
                 
             } catch(err){
                 console.error("Error fetching orders:", err);
             }
         }
-
-        const getAllOrderItems = async () => {
-          try{
-            
-          } catch(err){
-          console.error(err)
-          }
-       
-          
-        }
         getAllOrders()
-        console.log("Customer ID:", customerData?.id)
     }, [customerData?.id]);
+
+    // Separate useEffect for order items that depends on orders
+    useEffect(() => {
+        const getAllOrderItems = async () => {
+            if (!orders || orders.length === 0) {
+                console.log("No orders available yet");
+                return;
+            }
+            
+            const orderIds = orders.map((order) => `orderId=${order.id}`).join("&");
+            try{
+                const response = await fetch(`http://localhost:5000/api/order-items?${orderIds}`);
+                if(!response.ok){
+                    console.error("Order items response not ok:", response.status);
+                    return;
+                }
+                const data = await response.json();
+                alert(data.message);
+                setOrderItems({ order: data.orderItem, product: data.orderProducts });
+            } catch(err){
+                console.error("Error fetching order items:", err);
+            }
+        }
+        getAllOrderItems();
+        console.log("ito orderitems", orderItems)
+    }, [orders]);
      
 
 
@@ -74,6 +90,7 @@ export const OrderProvider = ({ children }) => {
   const value = {
     placeOrder,
     orders,
+    orderItems
   }
   return (
     <OrdersContext.Provider value={value}> 
