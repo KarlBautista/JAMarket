@@ -28,20 +28,25 @@ const Orders = () => {
         { activeTab === "to-ship" ? (
           <div>
           {
-            orders && orderItems.order ? (
+            orders && orderItems.order && orderItems.products ? (
                 orders
                   .filter(order => order.status === "pending")
                   .flatMap(order => 
                     orderItems.order
-                      .filter(orderItem => orderItem.order.id === order.id)
-                      .map(orderItem => (
-                        <OrderCard 
-                          key={`${order.id}-${orderItem.order.id}`}
-                          order={order}
-                          orderItem={orderItem}
-                        />
-                    ))
-                )
+                      .filter(orderItem => orderItem.order_id === order.id)
+                      .map(orderItem => {
+                        // Find the specific product for this order item
+                        const product = orderItems.products.find(p => p.product_id === orderItem.product_id);
+                        return (
+                          <OrderCard 
+                            key={`${order.id}-${orderItem.id}`}
+                            order={order}
+                            orderItem={orderItem}
+                            productItem={product}
+                          />
+                        );
+                      })
+                  )
             ) : (
               <div>Loading orders...</div>
             )
@@ -49,11 +54,83 @@ const Orders = () => {
           </div>
         
         ) : activeTab === "shipped" ? (
-          <div>This is shipped </div>
+          <div>
+          {
+            orders && orderItems.order && orderItems.products ? (
+                orders
+                  .filter(order => order.status === "shipped")
+                  .flatMap(order => 
+                    orderItems.order
+                      .filter(orderItem => orderItem.order_id === order.id)
+                      .map(orderItem => {
+                        const product = orderItems.products.find(p => p.id === orderItem.product_id);
+                        return (
+                          <OrderCard 
+                            key={`${order.id}-${orderItem.id}`}
+                            order={order}
+                            orderItem={orderItem}
+                            productItem={product}
+                          />
+                        );
+                      })
+                  )
+            ) : (
+              <div>No shipped orders</div>
+            )
+          }
+          </div>
         ) : activeTab === "received" ? (
-          <div>This is received</div>
+          <div>
+          {
+            orders && orderItems.order && orderItems.products ? (
+                orders
+                  .filter(order => order.status === "delivered" || order.status === "received")
+                  .flatMap(order => 
+                    orderItems.order
+                      .filter(orderItem => orderItem.order_id === order.id)
+                      .map(orderItem => {
+                        const product = orderItems.products.find(p => p.id === orderItem.product_id);
+                        return (
+                          <OrderCard 
+                            key={`${order.id}-${orderItem.id}`}
+                            order={order}
+                            orderItem={orderItem}
+                            productItem={product}
+                          />
+                        );
+                      })
+                  )
+            ) : (
+              <div>No received orders</div>
+            )
+          }
+          </div>
         ) : activeTab === "cancelled" ? (
-          <div>this is cancelled</div>
+          <div>
+          {
+            orders && orderItems.order && orderItems.products ? (
+                orders
+                  .filter(order => order.status === "cancelled")
+                  .flatMap(order => 
+                    orderItems.order
+                      .filter(orderItem => orderItem.order_id === order.id)
+                      .map(orderItem => {
+                        const product = orderItems.products.find(p => p.id === orderItem.product_id);
+                        return (
+                          <OrderCard 
+                            key={`${order.id}-${orderItem.id}`}
+                            order={order}
+                            orderItem={orderItem}
+                            productItem={product}
+                          />
+                        );
+                      })
+                  )
+            ) : (
+              <div>No cancelled orders</div>
+            )
+          }
+          </div>
         ) : null}
         </div>
       
