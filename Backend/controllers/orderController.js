@@ -22,7 +22,7 @@ const placeOrder = async (req, res) => {
             "product_id": c.product_id,
             "quantity": 1,
 
-        }))
+        }));
         const { error: insertItemError } = await supabase.from("orders_item")
         .insert(orderItems);
         if(insertItemError){
@@ -62,7 +62,6 @@ const getAllOrderItems = async (req, res) => {
         const { data: orderItemsData, error: orderItemsError } = await supabase.from("orders_item")
         .select("*").in("order_id", orderIds);
         if(orderItemsError){
-        
             res.status(500).json({ error: orderItemsError });
         }
         const productIds = orderItemsData.map((order) => order.product_id);
@@ -72,15 +71,11 @@ const getAllOrderItems = async (req, res) => {
             res.status(500).json({ error: productOrderItemError });
         }
         res.status(200).json({ message: "got all the orderItem and products", 
-                            orderItem: orderItemsData, 
-                            orderProducts: productOrderItemData })
+                               orderItem: orderItemsData, 
+                               orderProducts: productOrderItemData });
     } catch(err){
-          
         res.status(500).json({ error: err });
     }
-
-    
-    
 }
 
 module.exports = { placeOrder, getAllOrders, getAllOrderItems }

@@ -34,14 +34,13 @@ export const OrderProvider = ({ children }) => {
         getAllOrders()
     }, [customerData?.id]);
 
-    // Separate useEffect for order items that depends on orders
+ 
     useEffect(() => {
         const getAllOrderItems = async () => {
             if (!orders || orders.length === 0) {
                 console.log("No orders available yet");
                 return;
             }
-            
             const orderIds = orders.map((order) => `orderId=${order.id}`).join("&");
             try{
                 const response = await fetch(`http://localhost:5000/api/order-items?${orderIds}`);
@@ -51,7 +50,8 @@ export const OrderProvider = ({ children }) => {
                 }
                 const data = await response.json();
                 alert(data.message);
-                setOrderItems({ order: data.orderItem, product: data.orderProducts });
+                setOrderItems({ order: data.orderItem, products: data.orderProducts });
+                console.log("ito lahat ng order items and products mo baliw: ", orderItems)
             } catch(err){
                 console.error("Error fetching order items:", err);
             }
