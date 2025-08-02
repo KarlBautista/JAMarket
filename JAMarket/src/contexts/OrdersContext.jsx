@@ -87,10 +87,24 @@ export const OrderProvider = ({ children }) => {
     }
   }
 
+  const cancelOrder = async (orderId) => {
+    try{
+        const response = await fetch(`http://localhost:5000/api/cancel-order?orderId=${orderId}`);
+        if(!response.ok){
+            console.log(response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error(err);
+    }
+  }
+
   const value = {
     placeOrder,
     orders,
-    orderItems
+    orderItems,
+    cancelOrder
   }
   return (
     <OrdersContext.Provider value={value}> 
