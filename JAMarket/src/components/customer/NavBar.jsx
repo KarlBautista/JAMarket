@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import "../../css/NavBar.css";
 import CartIcon from "../../assets/shopping-cart.png";
 import UserIcon from "../../assets/user.png";
@@ -11,8 +11,15 @@ const NavBar = () => {
   const location = useLocation();
   const { session, signOut } = useAuthContext();
   const [isUserIconClicked, setIsUserIconClicked] = useState(false);
+  const navigate = useNavigate();
   const handleUserIcon = () => {
     setIsUserIconClicked(!isUserIconClicked);
+  }
+
+  const handleCartBtn = () => {
+    if(session === null){
+     alert("You need to log in first");
+    }
   }
   return (
     <div className="navbar-container">
@@ -72,14 +79,16 @@ const NavBar = () => {
       </div>
       
       <div className="cart-user">
-        <div className="cart-icon">
+       <div className="cart-icon">
+        
           <Link 
-            to="/cart" 
+            to={ session !== null ? "/cart" : "/login" }
             className={location.pathname === "/cart" ? "active-link" : ""}
+            onClick={() => handleCartBtn()}
           >
             <img src={CartIcon} alt="cart" />
           </Link>
-        </div>
+        </div> 
         
         <div className="user-icon" onClick={() => handleUserIcon()}>
           <img src={UserIcon} alt="" />
