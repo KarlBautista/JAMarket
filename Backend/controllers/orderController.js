@@ -30,6 +30,12 @@ const placeOrder = async (req, res) => {
           console.log(insertItemError)
             return res.status(500).json({ error: insertError });
         }
+
+        const { error: deleteCartError } = await supabase.from("Cart").delete().eq("user_id", userId);
+        if(deleteCartError){
+            res.status(500).json({ error: `error dito sa pagdelete sa cart: ${deleteCartError}`});
+        }
+
         res.status(200).json({ message: "successfully placed order" })
         console.log("finished");
 

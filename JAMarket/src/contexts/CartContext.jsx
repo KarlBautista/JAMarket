@@ -83,10 +83,12 @@ export const CartProvider = ({ children }) => {
                 body: JSON.stringify(({productId, customerId}))
             });
             if(!response.ok){
-                console.error("failed to insert to cart", response.error);
+                console.error("failed to insert to cart", response.status);
                 return
             }
             await getCart();
+          
+
             
         } catch(err){
             console.error(err);
@@ -126,6 +128,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         cartProduct,
         deleteProductItem,
+        getCart,
     }
 
     return(
