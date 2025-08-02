@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
-
+import { useCartContext } from "./CartContext";
 const OrdersContext = createContext();
 
 export const useOrdersContext = () => useContext(OrdersContext);
@@ -9,6 +9,7 @@ export const OrderProvider = ({ children }) => {
       const [ orders, setOrders ] = useState([]);
       const [ orderItems, setOrderItems ] = useState({ order: [], products: []});
       const { customerData } = useAuthContext();
+      const { getCart } = useCartContext();
     useEffect(() => {
         const getAllOrders = async () => {
             if (!customerData?.id) {
@@ -81,6 +82,7 @@ export const OrderProvider = ({ children }) => {
             console.error(response.error);
         }   
         const data = await response.json();
+        getCart();
         return data;  
     } catch(err){
         console.error(err);
