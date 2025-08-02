@@ -78,4 +78,21 @@ const getAllOrderItems = async (req, res) => {
     }
 }
 
-module.exports = { placeOrder, getAllOrders, getAllOrderItems }
+const cancelOrder = async (req, res) => {
+    console.log("running");
+    const orderId = req.query.orderId;
+    console.log(orderId)
+    try{
+        const { error: cancelOrderError } = await supabase.from("orders")
+        .update({ status: "cancelled"}).eq("id", orderId);
+
+        if(cancelOrderError){
+            return res.status(500).json({ error: cancelOrderError });
+        }
+        return res.status(200).json({ message: `cancelled order ${orderId}`});
+    } catch (err){
+        res.status(500).json({ error: err });
+    }
+}
+
+module.exports = { placeOrder, getAllOrders, getAllOrderItems, cancelOrder }

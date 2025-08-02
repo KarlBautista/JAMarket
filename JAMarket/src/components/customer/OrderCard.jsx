@@ -1,8 +1,8 @@
 import React from 'react'
 import "../../css/OrderCard.css"
-
+import { useOrdersContext } from '../../contexts/OrdersContext';
 const OrderCard = ({ order, orderItem, productItem }) => {
-  // Format price to currency
+  const { cancelOrder } = useOrdersContext();
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -29,10 +29,14 @@ const OrderCard = ({ order, orderItem, productItem }) => {
   };
 
   // Handle cancel order
-  const handleCancelOrder = () => {
+  const handleCancelOrder = async () => {
     if (window.confirm('Are you sure you want to cancel this order?')) {
-      // Add cancel order logic here
-      console.log('Cancelling order:', order?.id);
+      try{
+        const data = await cancelOrder(order.id);
+        alert(data.message);
+      } catch(err){
+        console.error(err);
+      }
     }
   };
 
@@ -119,7 +123,7 @@ const OrderCard = ({ order, orderItem, productItem }) => {
         <div className="order-actions">
           <button 
             className="cancel-btn"
-            onClick={handleCancelOrder}
+            onClick={ () => handleCancelOrder()}
             disabled={!canCancel}
             title={!canCancel ? 'Only pending orders can be cancelled' : 'Cancel this order'}
           >
