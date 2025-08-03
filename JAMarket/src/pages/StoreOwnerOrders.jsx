@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../css/StoreOwnerOrders.css"
 import StoreOwnerNavigation from '../components/store_owner/StoreOwnerNavigation'
-
+import PendingOrders from '../components/store_owner/PendingOrders';
+import ShippedOrders from '../components/store_owner/ShippedOrders';
+import DeliveredOrders from '../components/store_owner/DeliveredOrders';
 const StoreOwnerOrders = () => {
+
+    const [ activeLink, setActiveLink ] = useState("pending");
+
+    const handlePending = () => {
+        setActiveLink("pending");
+    }
+
+    const handleShipped = () => {
+        setActiveLink("shipped");
+    }
+
+    const handleDelivered = () => {
+        setActiveLink("delivered");
+    }
   return (
     <div className='store-owner-orders'>
         <StoreOwnerNavigation />
@@ -11,13 +27,16 @@ const StoreOwnerOrders = () => {
                 <h2>Orders Management</h2>
             </div>
             <div className="store-owner-orders-navigation">
-                <button>Pending</button>
-                <button>Shipped</button>
-                <button>Delivered</button>
+                <button onClick={() => handlePending()}>Pending</button>
+                <button onClick={() => handleShipped()}>Shipped</button>
+                <button onClick={() => handleDelivered()}>Delivered</button>
             </div>
             <div className="orders-content">
-              
-                <p>Orders will be displayed here...</p>
+                { activeLink === "pending" ? <PendingOrders /> :
+                  activeLink === "shipped" ? <ShippedOrders /> :
+                  activeLink === "delivered" ? <DeliveredOrders />
+                 : null
+                }
             </div>
         </div>
     </div>
