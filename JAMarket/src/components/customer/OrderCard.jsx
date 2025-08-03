@@ -2,7 +2,7 @@ import React from 'react'
 import "../../css/OrderCard.css"
 import { useOrdersContext } from '../../contexts/OrdersContext';
 const OrderCard = ({ order, orderItem, productItem }) => {
-  const { cancelOrder } = useOrdersContext();
+  const { cancelOrder, deleteOrder } = useOrdersContext();
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -23,12 +23,12 @@ const OrderCard = ({ order, orderItem, productItem }) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'short',
+      month: 'short', 
       day: 'numeric'
     });
   };
 
-  // Handle cancel order
+
   const handleCancelOrder = async () => {
     if (window.confirm('Are you sure you want to cancel this order?')) {
       try{
@@ -38,10 +38,21 @@ const OrderCard = ({ order, orderItem, productItem }) => {
         console.error(err);
       }
     }
-  };
+  }
+
+  const handleDeleteOrder = async () => {
+    if(window.confirm("Are you sure you want to delete this order?"))
+    try{
+      const data = await deleteOrder(order.id);
+      alert(data.message);
+    } catch(err){
+      console.error(err);
+    }
+  }
 
   // Check if order can be cancelled (only pending orders)
   const canCancel = order?.status === 'pending';
+  const canDelete = order?.status === "cancelled";
 
   return (
     <div className='order-card-container'>
@@ -123,11 +134,9 @@ const OrderCard = ({ order, orderItem, productItem }) => {
         <div className="order-actions">
           <button 
             className="cancel-btn"
-            onClick={ () => handleCancelOrder()}
-            disabled={!canCancel}
-            title={!canCancel ? 'Only pending orders can be cancelled' : 'Cancel this order'}
+            onClick={ canCancel ? () => handleCancelOrder() : canDelete ? () => handleDeleteOrder() : null}
           >
-            {canCancel ? 'Cancel Order' : 'Cannot Cancel'}
+            {canCancel ? 'Cancel Order' : canDelete ? "Delete Order" : null}
           </button>
         </div>
       </div>

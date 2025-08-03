@@ -45,6 +45,7 @@ const placeOrder = async (req, res) => {
 }
 
 const getAllOrders = async (req, res) => {
+    
     const customerId = req.query.id;
     console.log("Customer ID:", customerId)
     try{
@@ -101,4 +102,19 @@ const cancelOrder = async (req, res) => {
     }
 }
 
-module.exports = { placeOrder, getAllOrders, getAllOrderItems, cancelOrder }
+const deleteOrder = async (req, res) => {
+    console.log("gumagana")
+    const orderId = req.query.orderId;
+    try{
+        const { error: deleteOrderError } = await supabase.from("orders")
+        .delete().eq("id", orderId);
+        if(deleteOrderError){
+            return res.status(500).json({ error: deleteOrderError });
+        }
+        return res.status(200).json({ message: `Successfully deleted order: ${orderId}`});
+    } catch(err){
+        return res.status(500).json({ error: err });
+    }
+}
+
+module.exports = { placeOrder, getAllOrders, getAllOrderItems, cancelOrder, deleteOrder }

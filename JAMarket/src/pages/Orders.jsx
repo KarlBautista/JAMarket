@@ -5,8 +5,6 @@ import { useState } from 'react';
 import OrderCard from '../components/customer/OrderCard';
 const Orders = () => {
   const { orders, orderItems } = useOrdersContext();
-    console.log("ito mga order mo", orders);
-    console.log("ito order items", orderItems)
  const [ activeTab, setActiveTab ] = useState("to-ship");
 
 
@@ -63,7 +61,7 @@ const Orders = () => {
                     orderItems.order
                       .filter(orderItem => orderItem.order_id === order.id)
                       .map(orderItem => {
-                        const product = orderItems.products.find(p => p.id === orderItem.product_id);
+                        const product = orderItems.products.find(p => p.product_id === orderItem.product_id);
                         return (
                           <OrderCard 
                             key={`${order.id}-${orderItem.id}`}
@@ -89,7 +87,7 @@ const Orders = () => {
                     orderItems.order
                       .filter(orderItem => orderItem.order_id === order.id)
                       .map(orderItem => {
-                        const product = orderItems.products.find(p => p.id === orderItem.product_id);
+                        const product = orderItems.products.find(p => p.product_id === orderItem.product_id);
                         return (
                           <OrderCard 
                             key={`${order.id}-${orderItem.id}`}
@@ -115,7 +113,7 @@ const Orders = () => {
                     orderItems.order
                       .filter(orderItem => orderItem.order_id === order.id)
                       .map(orderItem => {
-                        const product = orderItems.products.find(p => p.id === orderItem.product_id);
+                        const product = orderItems.products.find(p => p.product_id === orderItem.product_id);
                         return (
                           <OrderCard 
                             key={`${order.id}-${orderItem.id}`}

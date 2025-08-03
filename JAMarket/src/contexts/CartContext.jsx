@@ -10,7 +10,7 @@ export const CartProvider = ({ children }) => {
     const { customerData } = useAuthContext();
     const userId = customerData?.id;
 
-     const getCart = useCallback(async () => {
+     const getCart = useCallback( async () => {
         if (!userId) return;
        
               console.log("✅ useEffect running - fetching cart");

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useAuthContext } from "./AuthContext";
 import { useCartContext } from "./CartContext";
 const OrdersContext = createContext();
@@ -10,8 +10,8 @@ export const OrderProvider = ({ children }) => {
       const [ orderItems, setOrderItems ] = useState({ order: [], products: []});
       const { customerData } = useAuthContext();
       const { getCart } = useCartContext();
-    useEffect(() => {
-        const getAllOrders = async () => {
+    
+        const getAllOrders = useCallback( async () => {
             if (!customerData?.id) {
                 console.log("Customer data not available yet");
                 return;
@@ -24,16 +24,18 @@ export const OrderProvider = ({ children }) => {
                     return;
                 }
                 const data = await response.json();
-                
-                console.log("Orders fetched:", data);
                 setOrders(data.data || []);
                 
             } catch(err){
                 console.error("Error fetching orders:", err);
             }
-        }
-        getAllOrders()
-    }, [customerData?.id]);
+        }, [customerData?.id]);
+
+        useEffect(() => {
+            getAllOrders();
+        }, [getAllOrders])
+       
+  
 
  
     useEffect(() => {
@@ -50,7 +52,6 @@ export const OrderProvider = ({ children }) => {
                     return;
                 }
                 const data = await response.json();
-                alert(data.message);
                 setOrderItems({ order: data.orderItem, products: data.orderProducts });
                 console.log("ito lahat ng order items and products mo baliw: ", orderItems)
             } catch(err){
@@ -83,6 +84,7 @@ export const OrderProvider = ({ children }) => {
         }   
         const data = await response.json();
         getCart();
+        getAllOrders();
         return data;  
     } catch(err){
         console.error(err);
@@ -96,8 +98,25 @@ export const OrderProvider = ({ children }) => {
             console.log(response.status);
         }
         const data = await response.json();
+         getAllOrders();
         return data;
     } catch (err) {
+        console.error(err);
+    }
+  }
+
+  const deleteOrder = async (orderId) => {
+    try{
+        const response = await fetch(`http://localhost:5000/api/delete-order?orderId=${orderId}`, {
+            method: "DELETE"
+        });
+        if(!response.ok){
+            console.error(`Error in deleting the order: ${response.status}`);
+        }
+        const data = await response.json();
+         getAllOrders();
+        return data;
+    } catch(err){
         console.error(err);
     }
   }
@@ -106,7 +125,9 @@ export const OrderProvider = ({ children }) => {
     placeOrder,
     orders,
     orderItems,
-    cancelOrder
+    cancelOrder,
+    deleteOrder,
+   
   }
   return (
     <OrdersContext.Provider value={value}> 
