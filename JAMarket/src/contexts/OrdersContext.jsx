@@ -33,11 +33,8 @@ export const OrderProvider = ({ children }) => {
 
         useEffect(() => {
             getAllOrders();
-        }, [getAllOrders])
+        }, [getAllOrders]);
        
-  
-
- 
     useEffect(() => {
         const getAllOrderItems = async () => {
             if (!orders || orders.length === 0) {

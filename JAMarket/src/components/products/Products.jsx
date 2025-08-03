@@ -59,6 +59,7 @@ const Products = () => {
                         <div className="products-table">
                             <div className="table-header">
                                 <div className="header-cell">PRODUCT</div>
+            
                                 <div className="header-cell">SKU</div>
                                 <div className="header-cell">CATEGORY</div>
                                 <div className="header-cell">PRICE</div>

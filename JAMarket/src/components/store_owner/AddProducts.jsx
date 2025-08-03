@@ -66,10 +66,7 @@ const AddProducts = () => {
         }
     }
 
-
-
     const handleCancel = () => {
-        // Reset form or navigate back
         setProductData({
             productName: '',
             description: '',

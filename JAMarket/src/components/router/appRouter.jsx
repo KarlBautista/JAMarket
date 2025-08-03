@@ -13,6 +13,7 @@ import Shops from "../../pages/Shops"
 import StorePage from "../../pages/StorePage";
 import ProductPage from "../../pages/ProductPage";
 import Orders from "../../pages/Orders";
+import StoreOwnerOrders from "../../pages/StoreOwnerOrders";
 
 const router = createBrowserRouter([
     {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         children: [
             {path: "dashboard", element: <StoreOwnerDashboard />},
             {path: "products", element: <Products />},
-            {path: "orders", element: <StoreOwnerDashboard />},
+            {path: "orders", element: <StoreOwnerOrders />},
             {path: "customers", element: <StoreOwnerDashboard />},
 
         ]
