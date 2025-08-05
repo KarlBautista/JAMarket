@@ -1,12 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../css/StoreOwnerOrders.css"
 import StoreOwnerNavigation from '../components/store_owner/StoreOwnerNavigation'
 import PendingOrders from '../components/store_owner/PendingOrders';
 import ShippedOrders from '../components/store_owner/ShippedOrders';
 import DeliveredOrders from '../components/store_owner/DeliveredOrders';
+import { useOrdersContext } from '../contexts/OrdersContext';
+import { useAuthContext } from '../contexts/AuthContext';
 const StoreOwnerOrders = () => {
-
     const [ activeLink, setActiveLink ] = useState("pending");
+   const { getAllOrdersFromStoreOwner } = useOrdersContext();
+    const { partnerData } = useAuthContext();
+    useEffect(() => {
+        const getAllOrders = async () => {  
+            if (!partnerData?.id) {
+                console.log("Partner data not available yet");
+                return;
+            }
+            try{
+                await getAllOrdersFromStoreOwner(partnerData.id);
+                
+            } catch(err){
+                console.error(err);
+            }
+        }
+        getAllOrders();
+    }, [])
+
 
     const handlePending = () => {
         setActiveLink("pending");

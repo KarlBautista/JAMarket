@@ -10,6 +10,7 @@ export const OrderProvider = ({ children }) => {
       const [ orderItems, setOrderItems ] = useState({ order: [], products: []});
       const { customerData } = useAuthContext();
       const { getCart } = useCartContext();
+      const [ storeOwnerOrders, setStoreOwnerOrders ] = useState([]);
     
         const getAllOrders = useCallback( async () => {
             if (!customerData?.id) {
@@ -118,12 +119,80 @@ export const OrderProvider = ({ children }) => {
     }
   }
 
+  const getAllOrdersFromStoreOwner = async (storeOwnerId) => {
+        try{
+            const response = await fetch(`http://localhost:5000/api/orders-store-owner?storeOwnerId=${storeOwnerId}`);
+            if(!response.ok){
+                console.error(response.status);
+            }
+            const data = await response.json();
+            setStoreOwnerOrders(data.data);
+            console.log("ito yung mga order galing sa store owner: ", data.data)
+        } catch(err){
+            console.error(err);
+        }
+  }
+
+  const rejectOrder = async (orderId) => {
+        try{
+            const response = await fetch(`http://localhost:5000/api/reject-order?orderId=${orderId}`, {
+                method: "PUT"
+            });
+            if(!response.ok){
+                console.error(response.status);
+            }   
+            const data = await response.json();
+            alert(data.message);
+            return true;
+        } catch(err){
+            console.error(err);
+        }
+  }
+
+  const shipOrder = async (orderId) => {
+        try{
+            const response = await fetch(`http://localhost:5000/api/ship-order?orderId=${orderId}`, {
+                method: "PUT"
+            });
+            if(!response.ok){
+                console.error(`Error fetching: ${response.status}`);
+            }
+            const data = await response.json();
+            alert(data.message);
+            return true;
+        } catch(err){
+            console.error(err);
+        }
+  }
+
+  const receiveOrder = async (orderId) => {
+        try{
+            const response = await fetch(`http://localhost:5000/api/receive-order?orderId=${orderId}`, {
+                method: "PUT"
+            });
+            if(!response.ok){
+                console.error("Error fetch:", response.status);
+            }
+            const data = await response.json();
+            alert(data.message);
+            getAllOrders();
+        } catch(err){
+            console.error(err);
+        }
+  }
+    
+
   const value = {
     placeOrder,
     orders,
     orderItems,
     cancelOrder,
     deleteOrder,
+    getAllOrdersFromStoreOwner,
+    storeOwnerOrders,
+    rejectOrder, 
+    shipOrder, 
+    receiveOrder
    
   }
   return (

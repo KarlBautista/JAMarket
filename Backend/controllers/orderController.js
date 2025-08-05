@@ -117,4 +117,109 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-module.exports = { placeOrder, getAllOrders, getAllOrderItems, cancelOrder, deleteOrder }
+const getAllOrdersFromStoreOwner = async (req, res) => {
+    const storeOwnerId = req.query.storeOwnerId;
+    try {
+        const { data: storeOwnerOrders, error: storeOwnerError } = await supabase
+            .from("orders")
+            .select(`
+                id,
+                customer_id,
+                order_date,
+                total_amount,
+                payment_method,
+                status,
+                delivered_date,
+                ship_date,
+                users:customer_id!inner ( 
+                    id,
+                    email,
+                    first_name,
+                    last_name,
+                    phone
+                ),
+                orders_item!inner (
+                    id,
+                    quantity,
+                    product_id,
+                    products!inner (
+                        product_id,
+                        product_name,
+                        price,
+                        sku,
+                        description,
+                        product_image,
+                        store_owner_id
+                    )
+                )
+            `)
+            .eq("orders_item.products.store_owner_id", storeOwnerId);
+
+        if (storeOwnerError) {
+            return res.status(500).json({ error: `Error in getting store owner orders: ${storeOwnerError}` });
+        }
+
+        return res.status(200).json({
+            message: "nakuha na lahat ng store owner orders",
+            data: storeOwnerOrders
+        });
+
+    } catch (err) {
+        return res.status(500).json({ error: err.message || err });
+    }
+};
+
+
+const rejectOrder = async (req, res) => {
+
+    const orderId = req.query.orderId;
+    try{
+        const { error: rejectedOrderError } = await supabase.from("orders")
+        .update({ status: "cancelled"}).eq("id", orderId)
+        
+        if(rejectedOrderError){
+            return res.status(500).json({ error: `Error while rejecting order :${rejectOrder}` });
+        }
+        return res.status(200).json({ message: `Rejected Order ${orderId}` });
+    } catch (err){
+        return res.status(500).json({ error: err });
+    }
+}
+
+const shipOrder = async (req, res) => {
+    const orderId = req.query.orderId;
+    try{
+        const { error: shipOrderError } = await supabase.from("orders")
+        .update({ status: "shipped", ship_date: new Date() }).eq("id", orderId);
+        if(shipOrderError){
+            return res.status(500).json({ error: `Error Updating data to shipped: ${shipOrderError}` });
+        }
+        return res.status(200).json({ message: `Shipped Order: ${orderId} `});
+    } catch (err){
+        return res.status(500).json({ error: err });
+    }
+}
+
+const receiveOrder = async (req, res) => {
+    const orderId = req.query.orderId;
+    try{
+        const { error: receiveOrderError } = await supabase.from("orders")
+        .update({ status: "delivered", delivered_date: new Date() }).eq("id", orderId);
+        if(receiveOrderError){
+            return res.status(500).json({ error: `Error in updating to status to delivered: ${receiveOrderError}` });
+        }
+        return res.status(200).json({ message: `Received Order: ${orderId} `});
+    } catch (err){
+        return res.status(500).json({ error: err });
+    }
+}
+
+module.exports = { placeOrder,
+                 getAllOrders, 
+                getAllOrderItems, 
+                cancelOrder, 
+                deleteOrder, 
+                getAllOrdersFromStoreOwner,
+                rejectOrder,
+                shipOrder,
+                receiveOrder }

@@ -2,7 +2,7 @@ import React from 'react'
 import "../../css/OrderCard.css"
 import { useOrdersContext } from '../../contexts/OrdersContext';
 const OrderCard = ({ order, orderItem, productItem }) => {
-  const { cancelOrder, deleteOrder } = useOrdersContext();
+  const { cancelOrder, deleteOrder, receiveOrder } = useOrdersContext();
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -15,7 +15,7 @@ const OrderCard = ({ order, orderItem, productItem }) => {
     return status ? status.toLowerCase() : 'pending';
   };
 
-  // Calculate total for this item
+
   const itemTotal = (productItem?.price || 0) * (orderItem?.quantity || 1);
 
   // Format date
@@ -50,13 +50,25 @@ const OrderCard = ({ order, orderItem, productItem }) => {
     }
   }
 
+  const handleReceiveOrder = async () => {
+    if(window.confirm("Are you sure you received this order?")){
+      try{
+        const data = await receiveOrder(order.id);
+        alert(data.message);
+      } catch (err){
+        console.error(err);
+      }
+    }
+  }
+
   // Check if order can be cancelled (only pending orders)
-  const canCancel = order?.status === 'pending';
-  const canDelete = order?.status === "cancelled";
+  const canCancel = order?.status === 'pending'
+  const canDelete = order?.status === "cancelled"  || order.status === "delivered";;
+  const canReceive = order.status === "shipped";
+  
 
   return (
     <div className='order-card-container'>
-      {/* Header with status and payment method */}
       <div className="order-card-header">
         <div className={`order-status ${getStatusClass(order?.status)}`}>
           {order?.status || 'Pending'}
@@ -66,9 +78,7 @@ const OrderCard = ({ order, orderItem, productItem }) => {
         </div>
       </div>
 
-      {/* Main content */}
       <div className="order-card-content">
-        {/* Product Image */}
         <div className="product-image-container">
           {productItem?.product_image ? (
             <img 
@@ -114,6 +124,28 @@ const OrderCard = ({ order, orderItem, productItem }) => {
           <span className="order-info-label">Order Date:</span>
           <span className="order-info-value">{formatDate(order?.order_date)}</span>
         </div>
+        { order.status === "shipped" ? (
+          <div className="order-info-row">
+          <span className='order-info-label'>Ship Date:</span>
+          <span className="order-info-value">{formatDate(order?.ship_date)}</span>
+          </div> ) : null
+        }
+
+        { order.status === "delivered" ? (
+          <>
+          <div className="order-info-row">
+          <span className='order-info-label'>Ship Date:</span>
+          <span className="order-info-value">{formatDate(order?.ship_date)}</span>
+          </div>
+          <div className='order-info-row'>
+          <span className='order-info-label'>Deliver Date:</span>
+          <span className='order-info-value'>{formatDate(order?.delivered_date)}</span>
+          </div>
+          </>
+        ) : null
+        
+        }
+      
         <div className="order-info-row">
           <span className="order-info-label">Payment Method:</span>
           <span className="order-info-value">{order?.payment_method || 'Credit Card'}</span>
@@ -123,8 +155,6 @@ const OrderCard = ({ order, orderItem, productItem }) => {
           <span className="order-info-value">{formatPrice(order?.total_amount || 0)}</span>
         </div>
       </div>
-
-      {/* Footer with item total and cancel button */}
       <div className="order-card-footer">
         <div className="order-total">
           <span className="total-label">Item Total:</span>
@@ -134,9 +164,13 @@ const OrderCard = ({ order, orderItem, productItem }) => {
         <div className="order-actions">
           <button 
             className="cancel-btn"
-            onClick={ canCancel ? () => handleCancelOrder() : canDelete ? () => handleDeleteOrder() : null}
+            onClick={ canCancel ? () => handleCancelOrder() : 
+                      canDelete ? () => handleDeleteOrder() :  
+                      canReceive ? () => handleReceiveOrder() : 
+                    
+                      null}
           >
-            {canCancel ? 'Cancel Order' : canDelete ? "Delete Order" : null}
+            {canCancel ? 'Cancel Order' : canDelete ? "Delete Order" : canReceive ? "Received" : null}
           </button>
         </div>
       </div>
