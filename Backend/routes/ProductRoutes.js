@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const { AddProduct, getProducts, getAllProductFromTable, getProduct } = require("../controllers/productController");
+const { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory } = require("../controllers/productController");
 
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post("/add-product", upload.single("productImage"), AddProduct);
 router.get("/all-products", getProducts);
-router.get("/all-products-from-table", getAllProductFromTable);
+router.get("/featured-products", getFeaturedProducts);
 router.get("/product", getProduct);
+router.post("/products-by-category", getProductByCategory)
 
 
 module.exports = router;

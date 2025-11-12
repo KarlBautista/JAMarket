@@ -6,7 +6,7 @@ const OrderCard = ({ order, orderItem, productItem }) => {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'PHP'
     }).format(price);
   };
 
@@ -16,8 +16,8 @@ const OrderCard = ({ order, orderItem, productItem }) => {
   };
 
 
-  const itemTotal = (productItem?.price || 0) * (orderItem?.quantity || 1);
-
+  
+  console.log(orderItem.quantity)
   // Format date
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -152,13 +152,13 @@ const OrderCard = ({ order, orderItem, productItem }) => {
         </div>
         <div className="order-info-row">
           <span className="order-info-label">Order Total:</span>
-          <span className="order-info-value">{formatPrice(order?.total_amount || 0)}</span>
+          <span className="order-info-value">{formatPrice((order?.total_amount * order?.quantity) || 0)}</span>
         </div>
       </div>
       <div className="order-card-footer">
         <div className="order-total">
           <span className="total-label">Item Total:</span>
-          <span className="total-amount">{formatPrice(itemTotal)}</span>
+          <span className="total-amount">{formatPrice(order?.total_amount)}</span>
         </div>
         
         <div className="order-actions">

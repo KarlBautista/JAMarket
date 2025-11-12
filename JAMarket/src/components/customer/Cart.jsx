@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "../../css/Cart.css"
 import { useAuthContext } from '../../contexts/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useCartContext } from '../../contexts/CartContext'
 import Reacts from "../../assets/react.svg"
@@ -11,12 +11,15 @@ const Cart = () => {
     const { cart, cartProduct, deleteProductItem } = useCartContext();
     const { placeOrder } = useOrdersContext();
     const { session, customerData } = useAuthContext(); 
-    const [ quantity, setQuantity ] = useState(0);
     const [mop, setMop] = useState("cod");
-    const subtotal = cartProduct.reduce((sum, item) => sum + item.price, 0);
+   const subtotal = cart.reduce((sum, item) => {
+          const product = cartProduct.find(p => p.id === item.productId);
+          return sum + (product.price * item.quantity);
+}, 0);
     const shipping = 100;
     const tax = subtotal * 0.12;
     const userId = customerData?.id;
+  
     
  
 
@@ -39,11 +42,14 @@ const Cart = () => {
       }
     }
 
+        console.log(cartProduct)
+
     const handleCheckout = async () => {
        if(mop === "cod"){
         try{
-           const response = await placeOrder(userId, cartProduct, subtotal, mop);
+           const response = await placeOrder(userId, cartProduct, (subtotal + tax + shipping), mop);
             alert("placed order");
+      
 
         } catch(err){
           console.error(err);
@@ -51,6 +57,8 @@ const Cart = () => {
          
        }
     }
+
+   
 
     const handleModChange = (e) => {
       setMop(e.target.value);
@@ -68,7 +76,7 @@ const Cart = () => {
             <div className='empty-cart-body'>
               <p id='cart-is-empty'>Your Cart is Empty</p>
               <p>Looks like you haven't added any items to your cart yet.</p>
-              <button>Start Shopping</button>
+              <Link to={"/shops"}><button>Start Shopping</button></Link>
             </div>
           ) : (
              <div className="cart-body">
@@ -88,7 +96,7 @@ const Cart = () => {
                               <p>{product.product_name}</p>
                             </div>
                             <div className="order-product-price">
-                              <p>₱{product.price}</p>
+                              <p>₱{subtotal}</p>
                             </div>
                           </div>
                           <div className="order-product-category">

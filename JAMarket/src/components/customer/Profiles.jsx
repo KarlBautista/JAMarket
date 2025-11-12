@@ -7,29 +7,30 @@ const Profiles = () => {
 
     const { session, signOut, customerData } = useAuthContext(); 
     const navigate = useNavigate();
-    
-    console.log(customerData)
-   
+
+    const userInformation = session?.user?.user_metadata;
+    console.log("ito userInformation", userInformation);
+    console.log("ito naman sa customer data", customerData);
 
   return (
     <div className='profiles'>
       <div className="profile-form">
         <h2>My Profile</h2>
         <div className="profile-form-img-container">
-          <img src={customerData?.profile_image || defaultImg} alt="Profile" />
+          <img src={userInformation?.avatar_url || defaultImg} alt="Profile" />
         </div>
         <div className="profile-form-information-form">
           <div className="information-group">
             <p>Name:</p>
-            <p>{customerData?.first_name} {customerData?.last_name}</p>
+            <p>{userInformation?.full_name || customerData?.first_name + " " + customerData.last_name}</p>
           </div>
           <div className="information-group">
             <p>Email:</p>
-            <p>{customerData?.email}</p>
+            <p>{userInformation?.email}</p>
           </div>
           <div className="information-group">
             <p>Phone:</p>
-            <p>{customerData?.phone || "Not provided"}</p>
+            <p>{userInformation?.phone || customerData?.phone || "N/A"}</p>
           </div>
         </div>
       </div>

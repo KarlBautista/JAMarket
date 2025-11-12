@@ -63,7 +63,7 @@ export const OrderProvider = ({ children }) => {
 
 
 
-  const placeOrder = async (userId, cartProduct, subtotal, mop) => {
+  const placeOrder = async (userId, cartProduct, subtotal, mop, quantity) => {
     try{
         const response = await fetch("http://localhost:5000/api/place-order", {
              method: "POST",
@@ -74,9 +74,12 @@ export const OrderProvider = ({ children }) => {
                 userId,
                 cart: cartProduct,
                 totalAmount: subtotal,
-                mop
+                mop,
+               
              })
+            
         });
+        
         if(!response.ok){
             console.error(response.error);
         }   

@@ -5,6 +5,24 @@ const ProductContext = createContext();
 export const useProductContext = () => useContext(ProductContext);
 
 export const ProductProvider = ({ children }) => {
+    const [featuredProducts, setFeaturedProducts] = useState([]);
+    useEffect(() => {
+       const getFeaturedProducts = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/api/featured-products");
+            if(!response.ok){
+                console.error(`Error getting featured products: ${response.error}`);
+                return
+            }
+            const data = await response.json();
+            setFeaturedProducts(data.data);
+        } catch (err) {
+            console.error(`Error getting featured products: ${err.message}`)
+        }
+    }
+    getFeaturedProducts();
+    }, []);
+    console.log("ito mga featured products", featuredProducts)
     const getProduct = async (id) => {
         try{
             const response = await fetch(`http://localhost:5000/api/product?id=${id}`);
@@ -15,13 +33,37 @@ export const ProductProvider = ({ children }) => {
             const data = await response.json();
             return data;
         } catch(err){
-            console.error(err);
+            console.error(err.message);
         }
     }
+
+    const getProductByCategory = async (category) => {
+        try {
+            const response = await fetch("http://localhost:5000/api/products-by-category", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify({ category }),
+            });
+            if(!response.ok){
+                console.error(`Error getting products by category: ${response.error}`);
+            }
+            const data = await response.json();
+            return data;
+
+        } catch (err) {
+            console.error(`Error getting products by category: ${err.message}`)
+        }
+    }
+
+ 
 
 
     const value = {
         getProduct,
+       featuredProducts,
+       getProductByCategory
     }
     return(
         <ProductContext.Provider value={value}>

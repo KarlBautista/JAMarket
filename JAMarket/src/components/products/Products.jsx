@@ -13,6 +13,8 @@ const Products = () => {
         setShowAddProduct(true)
     }
 
+    console.log(allProducts);
+
     useEffect(() => {
         if(!userId) return;
         const displayAllProducts = async () => {
@@ -70,7 +72,7 @@ const Products = () => {
                             </div>
                                 <div className="table-body">
                                 {allProducts?.map((product) => {
-                                return  <div className="table-row">
+                                return  <div className="table-row" key={product.id}>
                                     <div className="table-cell product-cell">
                                         <div className="product-image">
                                             <img src={product.product_image} alt="Guitar" />

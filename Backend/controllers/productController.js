@@ -90,7 +90,7 @@ const getProducts = async (req, res) => {
 };
 
 
-const getAllProductFromTable = async (req, res) => {
+const getFeaturedProducts = async (req, res) => {
     try{
         const { data: allProductData, error: allProductError } = await supabase.from("products")
             .select("*").limit(12);
@@ -99,7 +99,8 @@ const getAllProductFromTable = async (req, res) => {
                  console.log("dito nag error sa all productError");
                 return res.status(500).json({ error: allProductError.message });
                
-            }   
+            } 
+            
 
             return res.status(200).json({ message: "Successfully got all the data from the products", data: allProductData });
         
@@ -122,5 +123,24 @@ const getProduct = async (req, res) => {
     }
 }
 
+const getProductByCategory = async (req, res) => {
+    const category = req.body.category;
+  
+    try {
+        const { data: productByCategoryData, error: productByCategoryError } = await supabase.from("products").select("*")
+        .eq("category", category);
+        
+        if(productByCategoryError){
+            console.error(`Error getting product by category: ${productByCategoryError.message}`);
+            res.status(500).json({ success: false, error: productByCategoryError.message });
+        }
+        res.status(200).json({ success: true, data: productByCategoryData })
 
-module.exports = { AddProduct, getProducts, getAllProductFromTable, getProduct}
+    } catch (err) {
+        console.error(`Error getting products by category: ${err.message}`);
+        res.status(500).json({ success: false, error: err.message });
+    }
+}
+
+
+module.exports = { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory}

@@ -151,10 +151,9 @@ const AddProducts = () => {
                         required
                     >
                         <option value="Guitar">Guitar</option>
-                        <option value="Bass">Bass</option>
-                        <option value="Drums">Drums</option>
+                        <option value="Drum">Drums</option>
                         <option value="Keyboard">Keyboard</option>
-                        <option value="Amplifier">Amplifier</option>
+                        <option value="Microphone">Microphone</option>
                         <option value="Accessories">Accessories</option>
                     </select>
                 </div>

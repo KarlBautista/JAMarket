@@ -18,9 +18,9 @@ const placeOrder = async (req, res) => {
         const orderId = insertData[0].id;
         
         const orderItems = cart.map((c) => ({
-            "order_id": orderId,
+            "order_id": orderId,    
             "product_id": c.product_id,
-            "quantity": 1,
+            "quantity": c.quantity,
 
         }));
         const { error: insertItemError } = await supabase.from("orders_item")

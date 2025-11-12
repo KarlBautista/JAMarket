@@ -15,7 +15,7 @@ const NavBar = () => {
   const handleUserIcon = () => {
     setIsUserIconClicked(!isUserIconClicked);
   }
-
+  console.log("ito yung session", session);
   const handleCartBtn = () => {
     if(session === null){
      alert("You need to log in first");

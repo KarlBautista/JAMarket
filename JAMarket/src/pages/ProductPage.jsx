@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import "../css/ProductPage.css"
 import { useSearchParams } from 'react-router-dom'
 import { useProductContext } from '../contexts/ProductContext'
+import QuantityForm from '../components/customer/quantityForm'
+import { useCartContext } from '../contexts/CartContext'
+import { useAuthContext } from '../contexts/AuthContext'
 const ProductPage = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("id");
+  const [ showQuantityForm, setShowQuantityForm] = useState(false); 
   const { getProduct } = useProductContext();
   const [ product, setProduct ] = useState({});
+  const { addToCart } = useCartContext();
+  const { customerData } = useAuthContext();
+  const userId = customerData?.id;
   useEffect(() => {
       const getProductData = async () => {
         try{
@@ -24,6 +31,28 @@ const ProductPage = () => {
       }
       getProductData();
   }, []);
+
+  const handleAddToCart = async () => {
+    try{ 
+      setShowQuantityForm(true);
+    } catch(err){
+      console.error(err);
+    }
+  }
+
+    const handleAddToCartWithQuantity = async (product, quantity) => {
+    try {
+      await addToCart(userId, product.product_id, quantity);
+      alert("Product added to cart!");
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+      alert("Failed to add product to cart");
+    }
+  }
+
+  const handleQuantityFormClose = () => {
+    setShowQuantityForm(false);
+  }
 
   return (
     <div className='product-page'>
@@ -75,7 +104,7 @@ const ProductPage = () => {
 
               {/* Action Buttons */}
               <div className="product-actions">
-                <button className="add-to-cart-btn">Add to Cart</button>
+                <button className="add-to-cart-btn" onClick={() => handleAddToCart()}>Add to Cart</button>
                 <button className="wishlist-btn">♡</button>
               </div>
 
@@ -88,6 +117,12 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
+      <QuantityForm 
+        product={product}
+        isOpen={showQuantityForm}
+        onClose={handleQuantityFormClose}
+        onAddToCart={handleAddToCartWithQuantity}
+        />
     </div>
   )
 }

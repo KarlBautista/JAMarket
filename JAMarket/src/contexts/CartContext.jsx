@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
      const getCart = useCallback( async () => {
         if (!userId) return;
        
-              console.log("✅ useEffect running - fetching cart");
+            
             try{
                 const response = await fetch(`http://localhost:5000/api/get-cart?userId=${userId}`)
                 if(!response.ok){
@@ -72,7 +72,7 @@ export const CartProvider = ({ children }) => {
     }, [cart]);
    
   
-   const addToCart = async (productId, customerId) => {
+   const addToCart = async (customerId, productId, quantity) => {
         
         try{
             const response = await fetch("http://localhost:5000/api/add-to-cart", {
@@ -80,7 +80,7 @@ export const CartProvider = ({ children }) => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(({productId, customerId}))
+                body: JSON.stringify(({productId, customerId, quantity}))
             });
             if(!response.ok){
                 console.error("failed to insert to cart", response.status);

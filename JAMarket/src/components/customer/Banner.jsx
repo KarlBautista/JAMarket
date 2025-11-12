@@ -1,5 +1,6 @@
 import React from 'react'
 import "../../css/Banner.css"
+import { Link } from 'react-router-dom'
 const Banner = () => {
   return (
     <div className='banner-container'>
@@ -9,7 +10,7 @@ const Banner = () => {
                   <p>Premium music gear for professionals and enthusiast. From guitars to microphones
                     , we've got everything you need.
                   </p>
-                <button>Shop Now</button>
+                <Link to={"/shops"}><button>Shop Now</button></Link>
             </div>
 
             

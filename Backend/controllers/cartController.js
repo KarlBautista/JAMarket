@@ -1,12 +1,13 @@
 const supabase = require("../config/supabaseClient")
 
 const addToCart = async (req, res) => {
-    const { productId, customerId } = req.body;
+    const { productId, customerId, quantity } = req.body;
     try{
         const { data: insertCartData, error: insertCartError } = await supabase.from("Cart")
         .insert({
             user_id: customerId,
             product_id: productId,
+            quantity: quantity,
         }).single();
 
         if(insertCartError){
