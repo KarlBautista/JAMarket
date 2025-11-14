@@ -75,6 +75,26 @@ export const ProductProvider = ({ children }) => {
         }
     }
 
+    const getProductToUpdate = async (productId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/product-to-update/${productId}`);
+            if(!response.ok){
+                console.error(`Error getting the product dat: ${response.statusText}`);
+                return
+            }
+            const data = await response.json();
+            if(!data.success){
+                console.error(`Error getting product data: ${data.error}`);
+                return
+            }
+            console.log(data);
+            return data.data;
+        } catch (err) {
+            console.error(`Something went wrong getting the product data: ${productId}`);
+            return
+        }
+    }
+
  
 
 
@@ -83,6 +103,7 @@ export const ProductProvider = ({ children }) => {
        featuredProducts,
        getProductByCategory,
        deleteProduct,
+       getProductToUpdate
     }
     return(
         <ProductContext.Provider value={value}>

@@ -159,5 +159,25 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const getProductToUpdate = async (req, res) => {
+    const productId = req.params.productId;
+    console.log("product id to", productId);
+    try {
+        const { data: getProductToUpdateData, error: getProductToUpdateError} = await supabase.from("products")
+        .select("*").eq("product_id", productId);
 
-module.exports = { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory, deleteProduct}
+        if(getProductToUpdateError){
+            console.error(`Error getting the product data: ${getProductToUpdateError.message}`);
+            res.status(500).json({ success: false, error: getProductToUpdateError.message });
+        }
+
+        res.status(200).json({ success: true, data: getProductToUpdateData });
+        
+    } catch (err) {
+        console.error(`Something went wrong getting the product data: ${err.message}`);
+        res.status(500).json({ success: false, error: err.message });
+    }
+}
+
+
+module.exports = { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory, deleteProduct, getProductToUpdate}

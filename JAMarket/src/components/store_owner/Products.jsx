@@ -8,10 +8,11 @@ import Swal from 'sweetalert2'
 import EditProduct from './EditProduct'
 const Products = () => {
     const [showAddProduct, setShowAddProduct] = useState(false);
-    const [showEditProductForm, setShowEditProductForm] = useState(false);
     const { partnerData } = useAuthContext();
-    const { deleteProduct } = useProductContext();
+    const { deleteProduct, getProductToUpdate } = useProductContext();
     const [ allProducts, setAllProducts] = useState([]);
+    const [productDataToUpdate, setProductDataToUpdate] = useState([]);
+    const [showEditForm, setShowEditForm] = useState(false);
     const userId = partnerData?.id;
  
     const handleAddProduct = () => {
@@ -46,7 +47,12 @@ const Products = () => {
 
     const handleEditProduct = async (productId) => {
         try {
-            setShowEditProductForm(!showEditProductForm);
+            const response = await getProductToUpdate(productId);
+            // getProductToUpdate returns the product object (not wrapped in { data: ... })
+            if (response) {
+                setProductDataToUpdate(response[0]);
+                setShowEditForm(true);
+            }
         } catch (err) {
             console.error(err.message);
         }
@@ -88,7 +94,17 @@ const Products = () => {
             ) : (
                 <>
                     <div className="products-header">
-                        {showEditProductForm && <EditProduct />}
+                                             {showEditForm && (
+                                                 <EditProduct
+                                                     product={productDataToUpdate}
+                                                     onClose={() => setShowEditForm(false)}
+                                                     onSaved={(updated) => {
+                                                         // update local list with updated product (match by product_id or id)
+                                                         setAllProducts(prev => prev.map(p => ((p.product_id || p.id) === (updated.product_id || updated.id) ? { ...p, ...updated } : p)));
+                                                         setShowEditForm(false);
+                                                     }}
+                                                 />
+                                             )}
                         <h2>Your Products</h2>
                         <div className="input-product">
                             <input type="text" placeholder="Search products..." />

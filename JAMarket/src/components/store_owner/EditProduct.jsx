@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import '../../css/EditProduct.css'
 import { useAuthContext } from '../../contexts/AuthContext'
 
-const EditProduct = (productId) => {
+const EditProduct = ({ product, onClose = () => {}, onSaved = () => {} }) => {
   const { partnerData } = useAuthContext();
   const userId = partnerData?.id;
-
+    console.log(product)
   const [productData, setProductData] = useState({
     productName: '',
     description: '',
@@ -25,10 +25,18 @@ const EditProduct = (productId) => {
       category: product.category || 'Guitar',
       stockQuantity: product.stock_quantity || product.stockQuantity || '',
       sku: product.sku || product.SKU || '',
-      // keep existing image URL string if available
       productImage: product.product_image || null,
     })
   }, [product])
+
+  // close on Escape key
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -51,7 +59,6 @@ const EditProduct = (productId) => {
       formData.append('category', productData.category);
       formData.append('stockQuantity', productData.stockQuantity);
       formData.append('sku', productData.sku);
-      // only append file if user selected a new one
       if (productData.productImage && productData.productImage instanceof File) {
         formData.append('productImage', productData.productImage);
       }
@@ -68,8 +75,10 @@ const EditProduct = (productId) => {
       }
       const data = await res.json();
       alert(data.message || 'Product updated');
-      onSaved(data.data || {});
-      onClose();
+      // pass updated product back to parent (backend may return the updated object in data.data or data.product)
+      const updated = data.data || data.product || data;
+      try { onSaved(updated || {}); } catch (_) {}
+      try { onClose(); } catch (_) {}
     } catch (err) {
       console.error(err);
       alert('An error occurred while updating');
@@ -87,7 +96,7 @@ const EditProduct = (productId) => {
         <img src={URL.createObjectURL(productData.productImage)} alt="preview" className="preview-image" />
       )
     }
-    // assume string url
+ 
     return <img src={productData.productImage} alt="preview" className="preview-image" />
   }
 
