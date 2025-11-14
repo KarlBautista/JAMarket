@@ -8,7 +8,7 @@ import Cart from "../customer/Cart";
 import JoinWithUs from "../../pages/JoinWithUs";
 import StoreOwnerDashboard from "../store_owner/StoreOwnerDashboard";
 import StoreOwnerLayout from "../store_owner/StoreOwnerLayout";
-import Products from "../products/Products";
+import Products from "../store_owner/Products";
 import Shops from "../../pages/Shops"
 import StorePage from "../../pages/StorePage";
 import ProductPage from "../../pages/ProductPage";

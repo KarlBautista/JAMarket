@@ -142,5 +142,22 @@ const getProductByCategory = async (req, res) => {
     }
 }
 
+const deleteProduct = async (req, res) => {
+      const productId = req.params.productId;  
+    try {
+        const { error: deletedProductError } = await supabase.from("products")
+        .delete().eq("product_id", productId);
 
-module.exports = { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory}
+        if(deletedProductError){
+            console.error(`Error deleting product ${productId}: ${deletedProductError.message }`);
+            res.status(500).json({ success: false, error: err.message });
+        }
+        res.status(200).json({ success: true, message: `successfully deleted product ${productId}` });
+    } catch (err) {
+        console.error(`Something went wrong deleting product ${productId}`);
+        res.status(500).json({ success: false, error: err.message });
+    }
+}
+
+
+module.exports = { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory, deleteProduct}

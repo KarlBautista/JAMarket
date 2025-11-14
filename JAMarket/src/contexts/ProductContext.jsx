@@ -1,5 +1,6 @@
 import { useContext, createContext, useState, useEffect } from "react";
 
+
 const ProductContext = createContext();
 
 export const useProductContext = () => useContext(ProductContext);
@@ -57,13 +58,31 @@ export const ProductProvider = ({ children }) => {
         }
     }
 
+    const deleteProduct = async (productId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/delete-product/${productId}`, {
+                method: "DELETE"
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                console.error(`Error Deleting Product ${productId}: ${data?.error || response.statusText}`);
+                return { success: false, error: data?.error };
+            }
+            return data;
+        } catch (err) {
+            console.error(`Error Deleting product: ${productId}: ${err.message}`);
+            return { success: false, error: err.message };
+        }
+    }
+
  
 
 
     const value = {
         getProduct,
        featuredProducts,
-       getProductByCategory
+       getProductByCategory,
+       deleteProduct,
     }
     return(
         <ProductContext.Provider value={value}>

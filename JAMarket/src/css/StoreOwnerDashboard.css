@@ -330,3 +330,52 @@
     background: linear-gradient(180deg, #ef4444, #dc2626);
 }
 
+
+.chart-canvas {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chart-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.chart-container {
+    flex: 1 1 420px; 
+    min-width: 300px;
+    max-width: 100%;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(2,6,23,0.06);
+    border: 1px solid #f1f5f9;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /* constrain the visual height of the chart so it can't overflow parent */
+    max-height: 270px;
+    overflow: hidden;
+}
+
+.chart-container h2{ margin: 0 0 8px 0; font-size: 1rem; color: #374151 }
+
+/* Ensure apexcharts respects container width */
+.chart-container .apexcharts-canvas,
+.chart-container svg,
+.chart-container .apexcharts-inner {
+    max-width: 100% !important;
+    width: 100% !important;
+    /* force the chart to respect the container's height */
+    height: 100% !important;
+    max-height: 100% !important;
+}
+
+/* Smaller screens: stack charts vertically */
+@media (max-width: 900px) {
+    .chart-container { flex: 1 1 100%; }
+}
+

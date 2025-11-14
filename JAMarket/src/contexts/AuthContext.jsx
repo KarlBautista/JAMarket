@@ -57,23 +57,7 @@ export const AuthProvider = ({ children }) => {
         return () => subscription.unsubscribe();
     }, []);
 
-    const signInWithGoogle = async () => {
-        try {
-            const { data: signInWithGoogleData, error: signInWithGoogleError } = await supabase.auth.signInWithOAuth({
-                provider: "google",
-                options: {
-                    redirectTo: window.location.origin
-                }
-            });
 
-            if(signInWithGoogleError){
-                console.error(`Error signing in with google: ${signInWithGoogle.message}`);
-            }
-        } catch (err) {
-            console.error(`Error signing in with google :${err.message}`);
-        }
-        
-    }
    
 
     const handeJoinWithUs = async ( userData ) => {
@@ -294,7 +278,7 @@ export const AuthProvider = ({ children }) => {
     handeJoinWithUs,
     partnerData,
     customerData,
-    signInWithGoogle
+   
     }
 
 

@@ -15,7 +15,7 @@ const ProductCard = ({ product }) => {
 
   
   const handleAddToCart = async (e) => {
-    e.stopPropagation(); // Prevent event bubbling
+    e.stopPropagation(); 
     
     if(session === null){
       alert("You need to login first");
