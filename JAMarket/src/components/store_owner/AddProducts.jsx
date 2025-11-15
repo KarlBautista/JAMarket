@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "../../css/AddProducts.css"
 import { useAuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 const AddProducts = () => {
     const { partnerData } = useAuthContext();
     const userId = partnerData.id;
@@ -59,7 +60,10 @@ const AddProducts = () => {
             }
             const data = await response.json();
            handleCancel();
-           alert(data.message)
+           Swal.fire({
+            title: data.message,
+            timer: 2000
+           })
 
         } catch(err){
             console.error(err)
