@@ -72,7 +72,7 @@ const AddProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
     const userId = req.query.userId;
-    console.log(userId);
+
     try{
         const { data: productData, error: productError } = await supabase.from("products")
         .select("*").eq("store_owner_id", userId);
@@ -179,5 +179,82 @@ const getProductToUpdate = async (req, res) => {
     }
 }
 
+const updateProduct = async (req, res) => {
+    const {
+        productId,
+        userId,
+        productName,
+        description,
+        price,
+        category,
+        stockQuantity,
+        sku,
+        oldImageUrl 
+    } = req.body;
 
-module.exports = { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory, deleteProduct, getProductToUpdate}
+    const file = req.file;
+    let productImageUrl = oldImageUrl; 
+
+    try {
+        if (file) {
+            const filePath = `product-image/${Date.now()}_${file.originalname}`;
+
+            const { data: storageData, error: storageError } = await supabase.storage
+                .from("product-images")
+                .upload(filePath, file.buffer, {
+                    contentType: file.mimetype,
+                    upsert: true, // allows replacement if same name
+                });
+
+            if (storageError) {
+                console.error(`Error uploading updated image: ${storageError.message}`);
+                return res.status(500).json({ success: false, error: storageError.message });
+            }
+
+            const { data: publicUrlData } = supabase
+                .storage
+                .from("product-images")
+                .getPublicUrl(filePath);
+
+            productImageUrl = publicUrlData.publicUrl;
+        }
+
+        const parsedPrice = parseFloat(price);
+        const parsedStock = parseInt(stockQuantity, 10);
+
+        const { data: updateData, error: updateError } = await supabase
+            .from("products")
+            .update({
+                product_name: productName,
+                description,
+                price: parsedPrice,
+                category,
+                stock_quantity: parsedStock,
+                sku,
+                product_image: productImageUrl,
+            })
+            .eq("product_id", productId) 
+            .eq("store_owner_id", userId) 
+            .select()
+            .single();
+
+        if (updateError) {
+            console.error(`Error updating product: ${updateError.message}`);
+            return res.status(500).json({ success: false, error: updateError.message });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product updated successfully",
+            data: updateData,
+        });
+
+    } catch (err) {
+        console.error(`Something went wrong updating product: ${err.message}`);
+        res.status(500).json({ success: false, error: err.message });
+    }
+};
+
+
+
+module.exports = { AddProduct, getProducts, getFeaturedProducts, getProduct, getProductByCategory, deleteProduct, getProductToUpdate, updateProduct}

@@ -1,14 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../../css/StoreOwnerDashboard.css"
 import { useAuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import dollarSymbol from "../../assets/dollar-symbol.png"
 import StoreOwnerNavigation from './StoreOwnerNavigation'
 import Chart from "react-apexcharts";
+import { useProductContext } from '../../contexts/ProductContext';
 
 const StoreOwnerDashboard = () => {
     const navigate = useNavigate();
     const { session, partnerData, signOut } = useAuthContext();
+    const { getProduct } = useProductContext();
+    const [ products, setProducts ] = useState([]);
+
+    useEffect(() => {
+        const getAllProduct = async () => {
+            const response = await fetch(`http://localhost:5000/api/all-products?userId=${partnerData.id}`, {
+                    method: "GET"
+                });
+            if(!response.ok){
+                console.error(`Something went wrong getting the data ${response.statusText}}`);
+                return;
+            }
+            const data = await response.json();
+
+            if(data.data) {
+                setProducts(data.data);
+               
+            }
+        }
+        getAllProduct();
+    }, [partnerData]);
+     console.log("ito na yung mga data", products)
+
+ 
 
     const handleSignOut = async () => {
         const response = await signOut();
@@ -19,60 +44,78 @@ const StoreOwnerDashboard = () => {
         navigate("/login");
     }
 
-    // ---------------------- CHART DATA ----------------------
 
-    // 1. Monthly Sales Line Chart
+
+
+
+  
+
+    const totalRevenue = products.reduce((sum, p) => {
+        const price = Number(p.price) || 0;
+        const sold = Number(p.sold) || 0;
+        return sum + price * sold;
+    }, 0);
+
+    const totalUnitsSold = products.reduce((sum, p) => sum + (Number(p.sold) || 0), 0);
+    const monthlyTotalSales = Math.round(totalRevenue / 12);
+
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+    const monthlyValue = Math.round(totalRevenue / (months.length || 1));
     const monthlySales = {
-        series: [
-            { name: "Sales", data: [1200, 2300, 1800, 2900, 3400, 4200, 3900] }
-        ],
+        series: [ { name: "Sales", data: months.map(() => monthlyValue) } ],
         options: {
             chart: { id: "monthly-sales" },
-            xaxis: { categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"] },
+            xaxis: { categories: months },
             stroke: { curve: "smooth" },
             colors: ["#5A67D8"]
         }
     }
 
-    // 2. Orders Per Day Bar Chart
+ 
+
+    const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const perDay = Math.max(0, Math.round(totalUnitsSold / (weekDays.length || 1)));
     const dailyOrders = {
-        series: [
-            { name: "Orders", data: [20, 35, 30, 50, 60, 40, 25] }
-        ],
+        series: [ { name: "Orders", data: weekDays.map(() => perDay) } ],
         options: {
             chart: { id: "daily-orders" },
-            xaxis: { categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] },
+            xaxis: { categories: weekDays },
             colors: ["#38A169"]
         }
     }
 
-    // 3. Category Distribution Donut Chart
+ 
+  
+    const categoryMap = products.reduce((acc, p) => {
+        const cat = p.category || 'Uncategorized';
+        const sold = Number(p.sold) || 0;
+        acc[cat] = (acc[cat] || 0) + sold;
+        return acc;
+    }, {});
+    const categoryLabels = Object.keys(categoryMap);
+    const categorySeries = categoryLabels.map(l => categoryMap[l]);
     const categoryDistribution = {
-        series: [44, 55, 41, 17, 22],
+        series: categorySeries.length ? categorySeries : [1],
         options: {
-            labels: ["Ulam Meals", "Street Foods", "Kakanin", "Desserts", "Drinks"],
+            labels: categoryLabels.length ? categoryLabels : ["No Data"],
             colors: ["#667EEA", "#48BB78", "#ED8936", "#E53E3E", "#3182CE"],
             legend: { position: "bottom" }
         }
     }
 
-    // 4. Top Selling Products Horizontal Bar
+
+    const sortedBySold = [...products].sort((a,b) => (Number(b.sold)||0) - (Number(a.sold)||0));
+    const top = sortedBySold.slice(0,5);
+    const topCategories = top.map(p => p.product_name || p.productName || 'Unknown');
+    const topSeries = top.map(p => Number(p.sold) || 0);
     const topProducts = {
-        series: [
-            {
-                name: "Units Sold",
-                data: [50, 45, 38, 31, 20]
-            }
-        ],
+        series: [{ name: 'Units Sold', data: topSeries.length ? topSeries : [0] }],
         options: {
             chart: { id: "top-products" },
-            xaxis: {
-                categories: ["Adobo", "Sisig", "Halo-Halo", "Turon", "Banana Cue"]
-            },
+            xaxis: { categories: topCategories.length ? topCategories : ["No Data"] },
             colors: ["#ED64A6"],
-            plotOptions: {
-                bar: { horizontal: true }
-            }
+            plotOptions: { bar: { horizontal: true } }
         }
     }
 
@@ -95,7 +138,7 @@ const StoreOwnerDashboard = () => {
                         </div>
                         <div className="monthly-sales-title">
                             <p>Monthly Sales</p>
-                            <h2>$9393</h2>
+                            <h2>₱{monthlyTotalSales}</h2>
                         </div>
                     </div>
 
@@ -105,7 +148,7 @@ const StoreOwnerDashboard = () => {
                         </div>
                         <div className="orders-title">
                             <p>Total Orders</p>
-                            <h2>245</h2>
+                            <h2>{totalUnitsSold}</h2>
                         </div>
                     </div>
 
@@ -114,8 +157,8 @@ const StoreOwnerDashboard = () => {
                             <img src={dollarSymbol} alt="" />
                         </div>
                         <div className="conversion-rate-title">
-                            <p>Conversion Rate</p>
-                            <h2>12.5%</h2>
+                            <p>Total Revenue</p>
+                            <h2>₱{totalRevenue}</h2>
                         </div>
                     </div>
 
@@ -124,8 +167,8 @@ const StoreOwnerDashboard = () => {
                             <img src={dollarSymbol} alt="" />
                         </div>
                         <div className="new-customer-title">
-                            <p>New Customers</p>
-                            <h2>48</h2>
+                            <p>Customers</p>
+                            <h2>{totalUnitsSold}</h2>
                         </div>
                     </div>
                 </div>

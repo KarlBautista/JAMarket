@@ -2,9 +2,8 @@ const supabase = require("../config/supabaseClient")
 
 const placeOrder = async (req, res) => {
     const { userId, cart, totalAmount, mop } = req.body;
-   
-    console.log(cart)
   
+    const productIds = cart.map(c => c.product_id);
     try{
         const { data: insertData, error: insertError } = await supabase.from("orders").insert({
             "customer_id": userId,
@@ -13,7 +12,7 @@ const placeOrder = async (req, res) => {
             "payment_method": mop
         }).select("id");
         if(insertError){
-            return res.status(500).json({ error: insertError });
+             res.status(500).json({ error: insertError });
         }
         const orderId = insertData[0].id;
         
@@ -23,6 +22,32 @@ const placeOrder = async (req, res) => {
             "quantity": c.quantity,
 
         }));
+
+        const { data: productSoldToUpdateData, error: productSoldToUpdateError } = await supabase.from("products")
+        .select("*").in("product_id", productIds);
+
+        if(productSoldToUpdateError) {
+            console.error(`Error getting product to sold data: ${productSoldToUpdateError.message}`);
+            res.status(500).json({ error: productSoldToUpdateError.message });
+        }
+
+       
+        for (const item of cart) {
+            const productRow = productSoldToUpdateData.find(p => p.product_id === item.product_id);
+            if(!productRow) continue;
+            const newSold = productRow.sold + item.quantity;
+         
+            const { error: updateProductSoldError } = await supabase.from("products").update({
+                sold: newSold
+            }).eq("product_id", item.product_id);
+
+            if(updateProductSoldError){
+                console.error(`Error updating sold number: ${updateProductSoldError.message}`);
+                res.status(500).json({ error: updateProductSoldError.message });
+            }
+
+        }
+
         const { error: insertItemError } = await supabase.from("orders_item")
         .insert(orderItems);
         if(insertItemError){
@@ -40,7 +65,7 @@ const placeOrder = async (req, res) => {
         console.log("finished");
 
     } catch(err){
-        return res.status(404).json({ error: err });
+        res.status(404).json({ error: err });
     }
 }
 

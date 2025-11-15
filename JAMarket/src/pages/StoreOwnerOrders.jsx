@@ -45,11 +45,26 @@ const StoreOwnerOrders = () => {
             <div className="store-owner-orders-header">
                 <h2>Orders Management</h2>
             </div>
-            <div className="store-owner-orders-navigation">
-                <button onClick={() => handlePending()}>Pending</button>
-                <button onClick={() => handleShipped()}>Shipped</button>
-                <button onClick={() => handleDelivered()}>Delivered</button>
-            </div>
+                        <div className="store-owner-orders-navigation">
+                                <button
+                                    className={activeLink === 'pending' ? 'tab-btn active' : 'tab-btn'}
+                                    onClick={() => handlePending()}
+                                >
+                                    Pending
+                                </button>
+                                <button
+                                    className={activeLink === 'shipped' ? 'tab-btn active' : 'tab-btn'}
+                                    onClick={() => handleShipped()}
+                                >
+                                    Shipped
+                                </button>
+                                <button
+                                    className={activeLink === 'delivered' ? 'tab-btn active' : 'tab-btn'}
+                                    onClick={() => handleDelivered()}
+                                >
+                                    Delivered
+                                </button>
+                        </div>
             <div className="orders-content">
                 { activeLink === "pending" ? <PendingOrders /> :
                   activeLink === "shipped" ? <ShippedOrders /> :

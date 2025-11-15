@@ -23,7 +23,7 @@ export const ProductProvider = ({ children }) => {
     }
     getFeaturedProducts();
     }, []);
-    console.log("ito mga featured products", featuredProducts)
+
     const getProduct = async (id) => {
         try{
             const response = await fetch(`http://localhost:5000/api/product?id=${id}`);
@@ -32,6 +32,7 @@ export const ProductProvider = ({ children }) => {
                 return
             }
             const data = await response.json();
+            console.log("from context", data)
             return data;
         } catch(err){
             console.error(err.message);

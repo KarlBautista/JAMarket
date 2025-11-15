@@ -63,13 +63,7 @@ const StoreOwnerNavigation = () => {
                        <p>Orders</p>
                 </div></Link> 
 
-                 <Link to="/store-owner/customers">
-                 <div className={ location.pathname === "/store-owner/customers" ? 
-                    "store-owner-active-link" : "store-owner-navigation-row"
-                }>
-                     <img src={Customer} alt="" />
-                      <p>Customers</p>
-                </div></Link> 
+              
                 
 
                   <div className="store-owner-navigation-row" onClick={() => handleLogout()}>

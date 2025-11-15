@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../../css/EditProduct.css'
 import { useAuthContext } from '../../contexts/AuthContext'
+import Swal from 'sweetalert2'
 
 const EditProduct = ({ product, onClose = () => {}, onSaved = () => {} }) => {
   const { partnerData } = useAuthContext();
@@ -29,7 +30,6 @@ const EditProduct = ({ product, onClose = () => {}, onSaved = () => {} }) => {
     })
   }, [product])
 
-  // close on Escape key
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
@@ -48,42 +48,65 @@ const EditProduct = ({ product, onClose = () => {}, onSaved = () => {} }) => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append('productId', product.id || product.product_id || '');
-      formData.append('userId', userId || '');
-      formData.append('productName', productData.productName);
-      formData.append('description', productData.description);
-      formData.append('price', productData.price);
-      formData.append('category', productData.category);
-      formData.append('stockQuantity', productData.stockQuantity);
-      formData.append('sku', productData.sku);
-      if (productData.productImage && productData.productImage instanceof File) {
-        formData.append('productImage', productData.productImage);
-      }
+  e.preventDefault();
 
-      const res = await fetch('http://localhost:5000/api/update-product', {
-        method: 'POST',
-        body: formData,
-      })
-      if (!res.ok) {
-        const err = await res.text();
-        console.error('Update failed', err);
-        alert('Failed to update product');
-        return;
-      }
-      const data = await res.json();
-      alert(data.message || 'Product updated');
-      // pass updated product back to parent (backend may return the updated object in data.data or data.product)
-      const updated = data.data || data.product || data;
-      try { onSaved(updated || {}); } catch (_) {}
-      try { onClose(); } catch (_) {}
-    } catch (err) {
-      console.error(err);
-      alert('An error occurred while updating');
+  try {
+    const formData = new FormData();
+    formData.append('productId', product.id || product.product_id || '');
+    formData.append('userId', userId || '');
+    formData.append('productName', productData.productName);
+    formData.append('description', productData.description);
+    formData.append('price', productData.price);
+    formData.append('category', productData.category);
+    formData.append('stockQuantity', productData.stockQuantity);
+    formData.append('sku', productData.sku);
+
+    if (productData.productImage instanceof File) {
+      formData.append('file', productData.productImage); 
+      formData.append('oldImageUrl', product.product_image); 
     }
+
+    const response = await fetch("http://localhost:5000/api/update-product", {
+      method: "PUT",
+      body: formData, 
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      console.error(`Error: ${data.error || response.statusText}`);
+      return;
+    }
+
+    Swal.fire({
+      title: data.message,
+      timer: 2000,
+      icon: "success",
+    });
+    onSaved({
+    ...product,
+      product_name: productData.productName,
+      description: productData.description,
+      price: productData.price,
+      category: productData.category,
+      stock_quantity: productData.stockQuantity,
+      sku: productData.sku,
+      product_image: productData.productImage instanceof File
+        ? data.newImageUrl || product.product_image 
+        : product.product_image,
+  });
+
+
+
+    onClose();
+
+  } catch (err) {
+    console.error(`Error Updating Product: ${err.message}`);
   }
+};
+
+  
+    
 
   const handleCancel = () => {
     onClose();

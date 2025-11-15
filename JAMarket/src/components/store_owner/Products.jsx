@@ -48,7 +48,6 @@ const Products = () => {
     const handleEditProduct = async (productId) => {
         try {
             const response = await getProductToUpdate(productId);
-            // getProductToUpdate returns the product object (not wrapped in { data: ... })
             if (response) {
                 setProductDataToUpdate(response[0]);
                 setShowEditForm(true);
@@ -99,7 +98,7 @@ const Products = () => {
                                                      product={productDataToUpdate}
                                                      onClose={() => setShowEditForm(false)}
                                                      onSaved={(updated) => {
-                                                         // update local list with updated product (match by product_id or id)
+                                
                                                          setAllProducts(prev => prev.map(p => ((p.product_id || p.id) === (updated.product_id || updated.id) ? { ...p, ...updated } : p)));
                                                          setShowEditForm(false);
                                                      }}

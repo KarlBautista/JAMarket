@@ -1,7 +1,7 @@
 .store-owner-orders {
     width: 100%;
     min-height: 100vh;
-    background-color: #f8fafc;
+ 
     display: flex;
 }
 
@@ -25,14 +25,47 @@
     margin: 0;
 }
 
+.store-owner-orders-navigation {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.tab-btn {
+    background: transparent;
+    color: #374151;
+    border: 1px solid rgba(99,102,241,0.12);
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 150ms ease;
+}
+
+.tab-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(79,70,229,0.08);
+}
+
+.tab-btn.active {
+    background: #312E81;
+    color: white;
+    border: none;
+    box-shadow: 0 8px 24px rgba(99,102,241,0.18);
+}
+
 .orders-content {
-    background-color: white;
-    border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 24px;
-    min-height: 400px;
+    min-height: 750px;
 }
 
 .store-owner-order-ids{
     color: hsl(0, 0%, 50%);
+}
+
+@media (max-width: 780px) {
+    .store-owner-orders-container { padding: 16px; margin-left: 0 }
+    .store-owner-orders-navigation { gap: 8px }
+    .tab-btn { padding: 6px 10px; font-size: 14px }
 }
