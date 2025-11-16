@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "../../css/Login.css"
 import { useState } from 'react'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 const Login = () => {
   const navigate = useNavigate();
   const { signIn, session, partnerData, customerData } = useAuthContext();
@@ -10,6 +11,10 @@ const Login = () => {
     email: "",
     password: ""
   })
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,13 +26,23 @@ const Login = () => {
     try{
       const response = await signIn(user);
       if(response.error){
-        alert("Error occured while singing in", response.error);
+        Swal.fire({
+          title: "Incorrect Email and Password",
+          text: "Please double check your credentials",
+          icon: "error",
+          showConfirmButton: true,
+        })
         return;
       }
 
-      alert(response.message);
+      Swal.fire({
+        title: "Welcome to JAMarket!",
+        text: response.message,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      })
       
-      // Navigate based on the response message instead of state
       if(response.message === "successfully partner signin"){
         navigate("/store-owner/dashboard");
       } 
@@ -36,6 +51,13 @@ const Login = () => {
       }
     } catch(err) {
       console.error(err);
+       Swal.fire({
+          title: "Incorrect Email and Password",
+          text: "Please double check your credentials",
+          icon: "error",
+          showConfirmButton: true,
+        })
+        return;
     }
   }
 

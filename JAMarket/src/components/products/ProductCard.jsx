@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCartContext } from "../../contexts/CartContext";
 import QuantityForm from '../customer/quantityForm';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 const ProductCard = ({ product }) => {
   const { session, customerData } = useAuthContext();
   const [showQuantityForm, setShowQuantityForm] = useState(false);
@@ -15,23 +16,22 @@ const ProductCard = ({ product }) => {
 
   
   const handleAddToCart = async (e) => {
-    e.stopPropagation(); 
-    
-    if(session === null){
-      alert("You need to login first");
-      navigate("/login");
-      return;
+    e.stopPropagation();    
+    if(session === null || customerData === null){
+      const res = await Swal.fire({
+          title: "Please Sign-in your account first",
+          text: "Sign-in to your account to add products to your cart.",
+          showConfirmButton: true,
+          icon: "info",
+          confirmButtonText: 'Go to Login'
+        });
+        if(res.isConfirmed){
+          navigate("/login");
+          return
+        }
     }
-
     try{
-      if(!userId){
-        alert("You need to signin first");
-        return;
-      }
-      
-      // Show the quantity form
       setShowQuantityForm(true);
-      
     } catch(err){
       console.error(err)
     }
@@ -44,10 +44,20 @@ const ProductCard = ({ product }) => {
   const handleAddToCartWithQuantity = async (product, quantity) => {
     try {
       await addToCart(userId, product.product_id, quantity);
-      alert("Product added to cart!");
+      await Swal.fire({
+        title: 'Added to cart',
+        text: 'Product added to cart successfully.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
     } catch (err) {
       console.error("Error adding to cart:", err);
-      alert("Failed to add product to cart");
+      await Swal.fire({
+        title: 'Failed',
+        text: 'Failed to add product to cart.',
+        icon: 'error'
+      });
     }
   }
 

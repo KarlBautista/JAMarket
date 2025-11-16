@@ -22,7 +22,7 @@ import Microphones from "../../pages/Microphones";
 
 const router = createBrowserRouter([
     {
-        path: "/", 
+        path: "/",      
         element: <App />,
         children: [
             { path: "/", element: <Home /> },

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useOrdersContext } from '../../contexts/OrdersContext'
+import Swal from 'sweetalert2'
 import { useAuthContext } from '../../contexts/AuthContext'
 import "../../css/StoreOrders.css"
 const DeliveredOrders = () => {
@@ -26,28 +27,46 @@ const DeliveredOrders = () => {
   }   
 
   const handleReject = async (orderId) => {
-    if(window.confirm("Are you sure you want to reject this order?")){
-      try{
-        const response = await rejectOrder(orderId);
-        if(response && partnerData?.id) {
-          await getAllOrdersFromStoreOwner(partnerData.id);
-        }
-      } catch(err){
-        console.error(err);
+    const result = await Swal.fire({
+      title: 'Reject Order',
+      text: 'Are you sure you want to reject this order?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reject',
+      cancelButtonText: 'Cancel'
+    });
+    if(!result.isConfirmed) return;
+    try{
+      const response = await rejectOrder(orderId);
+      if(response && partnerData?.id) {
+        await getAllOrdersFromStoreOwner(partnerData.id);
+        await Swal.fire({ title: 'Rejected', text: response.message || 'Order rejected', icon: 'success' });
       }
+    } catch(err){
+      console.error(err);
+      await Swal.fire({ title: 'Error', text: 'Something went wrong', icon: 'error' });
     }
   }
 
   const handleShip = async (orderId) => {
-    if(window.confirm("Are you sure you want to ship this order?")){
-      try{
-        const response = await shipOrder(orderId);
-        if(response && partnerData?.id) {
-          await getAllOrdersFromStoreOwner(partnerData.id);
-        }
-      } catch(err){
-        console.error(err);
+    const result = await Swal.fire({
+      title: 'Ship Order',
+      text: 'Are you sure you want to ship this order?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, ship',
+      cancelButtonText: 'Cancel'
+    });
+    if(!result.isConfirmed) return;
+    try{
+      const response = await shipOrder(orderId);
+      if(response && partnerData?.id) {
+        await getAllOrdersFromStoreOwner(partnerData.id);
+        await Swal.fire({ title: 'Shipped', text: response.message || 'Order shipped', icon: 'success' });
       }
+    } catch(err){
+      console.error(err);
+      await Swal.fire({ title: 'Error', text: 'Something went wrong', icon: 'error' });
     }
   }
 

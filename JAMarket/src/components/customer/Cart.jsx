@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { useCartContext } from '../../contexts/CartContext'
 import Reacts from "../../assets/react.svg"
 import { useOrdersContext } from '../../contexts/OrdersContext'
+import Swal from 'sweetalert2'
 const Cart = () => {
     const navigate = useNavigate();
     const { cart, cartProduct, deleteProductItem } = useCartContext();
@@ -24,21 +25,41 @@ const Cart = () => {
  
 
     useEffect(() => {
-        if(session === undefined){
-            alert("You need to login first");
-            navigate("/login");
-        }
+      if(session === undefined){
+        Swal.fire({
+          title: 'Login required',
+          text: 'You need to login first',
+          icon: 'warning',
+          confirmButtonText: 'Go to Login'
+        }).then(() => {
+          navigate('/login');
+        });
+      }
     }, []);
 
     const deleteProduct = async (index) => {
+      const result = await Swal.fire({
+        title: 'Remove Item',
+        text: 'Are you sure you want to remove this item from your cart?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Remove',
+        cancelButtonText: 'Keep'
+      });
+
+      if (!result.isConfirmed) return;
+
       try{
         const response = await deleteProductItem(cart[index].id);
         if(!response.success){
           console.log(response.error);
+          await Swal.fire({ title: 'Notice', text: response.message || 'Could not remove item.', icon: 'info' });
+          return;
         }
-        console.log(response.message);
+        await Swal.fire({ title: 'Removed', text: response.message || 'Item removed from cart.', icon: 'success' });
       } catch(err){
         console.error(err);
+        await Swal.fire({ title: 'Error', text: 'Something went wrong.', icon: 'error' });
       }
     }
 
@@ -48,11 +69,14 @@ const Cart = () => {
        if(mop === "cod"){
         try{
            const response = await placeOrder(userId, cartProduct, (subtotal + tax + shipping), mop);
-            alert("placed order");
-      
-
+           if(response?.success){
+             await Swal.fire({ title: 'Order Placed', text: response.message || 'Your order has been placed.', icon: 'success' });
+           } else {
+             await Swal.fire({ title: 'Notice', text: response?.message || 'Could not place order.', icon: 'info' });
+           }
         } catch(err){
           console.error(err);
+          await Swal.fire({ title: 'Error', text: 'Something went wrong while placing the order.', icon: 'error' });
         }
          
        }
@@ -135,7 +159,7 @@ const Cart = () => {
                         <h4>Mode of Payment</h4>
                         <select name="mod" id="" onChange={handleModChange}>
                           <option value="cod">Cash On Delivery</option>
-                          <option value="gcash">GCASH</option>
+                        
                         </select>
                       </div>
                       <div className="summary-total">

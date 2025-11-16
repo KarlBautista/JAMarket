@@ -164,7 +164,7 @@
     margin: 0;
 }
 
-.product-rating {
+.product-stock {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -188,7 +188,7 @@
 
 .add-to-cart-btn {
     flex: 1;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: hsl(242, 47%, 39%);
     color: white;
     border: none;
     padding: 16px 24px;
@@ -202,8 +202,7 @@
 }
 
 .add-to-cart-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    background-color: hsl(242, 47%, 44%);
 }
 
 .wishlist-btn {
@@ -218,11 +217,7 @@
     transition: all 0.3s ease;
 }
 
-.wishlist-btn:hover {
-    background-color: #6366f1;
-    color: white;
-    transform: translateY(-2px);
-}
+
 
 .store-info {
     margin-top: 25px;

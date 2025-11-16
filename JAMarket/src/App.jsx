@@ -10,8 +10,10 @@ import Home from './pages/Home'
 import { ProductProvider } from './contexts/ProductContext'
 import { OrderProvider } from './contexts/OrdersContext'
 
-function App() {
 
+
+function App() {
+  
   return (
    <ShopProvider>
     <ProductProvider>

@@ -6,6 +6,7 @@ import dollarSymbol from "../../assets/dollar-symbol.png"
 import StoreOwnerNavigation from './StoreOwnerNavigation'
 import Chart from "react-apexcharts";
 import { useProductContext } from '../../contexts/ProductContext';
+import Swal from 'sweetalert2'
 
 const StoreOwnerDashboard = () => {
     const navigate = useNavigate();
@@ -36,12 +37,18 @@ const StoreOwnerDashboard = () => {
  
 
     const handleSignOut = async () => {
-        const response = await signOut();
-        if(response.error){
-            alert(response.error);
+        try{
+            const response = await signOut();
+            if(response.error){
+                await Swal.fire({ title: 'Error', text: response.error, icon: 'error' });
+                return;
+            }
+            await Swal.fire({ title: 'Signed-out', icon: 'success', text: response.message });
+            navigate("/login");
+        } catch (err){
+            console.error(err);
+            await Swal.fire({ title: 'Error', text: 'Something went wrong during sign out.', icon: 'error' });
         }
-        alert(response.message);
-        navigate("/login");
     }
 
 

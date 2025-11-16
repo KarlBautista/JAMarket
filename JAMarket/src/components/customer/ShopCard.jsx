@@ -1,11 +1,13 @@
 import React from 'react'
 import "../../css/ShopCard.css"
 import { useNavigate } from 'react-router-dom'
-const ShopCard = ({ shop }) => {
+const ShopCard = ({ shop, products}) => {
     const navigate = useNavigate();
     const handleShopCard = () => {
        navigate(`/store-page?id=${shop.id}`);
     }
+
+    console.log("ito mga shopcard",shop)
   return (
     <div className='shop-card-container' onClick={() => handleShopCard()}>
         <div className="shop-card-img-container">
@@ -18,7 +20,7 @@ const ShopCard = ({ shop }) => {
             
             <div className="shop-card-stats">
                 <div className="shop-stat">
-                    <p className="shop-stat-number">{}</p>
+                    <p className="shop-stat-number">{products.length}</p>
                     <p className="shop-stat-label">Products</p>
                 </div>
                 <div className="shop-stat">

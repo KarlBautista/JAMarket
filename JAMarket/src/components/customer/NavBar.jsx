@@ -6,7 +6,7 @@ import CartIcon from "../../assets/shopping-cart.png";
 import UserIcon from "../../assets/user.png";
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useState } from 'react';
-
+import Swal from 'sweetalert2';
 const NavBar = () => {
   const location = useLocation();
   const { session, signOut } = useAuthContext();
@@ -15,10 +15,23 @@ const NavBar = () => {
   const handleUserIcon = () => {
     setIsUserIconClicked(!isUserIconClicked);
   }
-  console.log("ito yung session", session);
+
   const handleCartBtn = () => {
     if(session === null){
      alert("You need to log in first");
+    }
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      Swal.fire({ title: "Signed-out", icon: "success", text: "Thank you for choosing JAMarket."})
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        title: "Something went wrong signing out",
+        icon: "error"
+      })
     }
   }
   return (
@@ -107,7 +120,7 @@ const NavBar = () => {
                           Orders
                         </Link>
                   </div>
-                  <div id="logout" onClick={signOut}>
+                  <div id="logout" onClick={() => handleSignOut()}>
                      Logout
                   </div>
                   

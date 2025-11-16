@@ -5,7 +5,7 @@ import { useShopContext } from '../contexts/ShopContext'
 
 const Shops = () => {
   const { shops, products } = useShopContext(); 
-  
+
   return (
     <div className='shops-page-container'>
       {/* Header Section */}
@@ -43,7 +43,7 @@ const Shops = () => {
         {shops && shops.length > 0 ? (
           <div className='shops-container'>
             {shops.map((shop) => {
-              return <ShopCard shop={shop} key={shop.id}/>
+              return <ShopCard shop={shop} key={shop.id} products={products.filter((p) => p.store_owner_id === shop.id)}/>
             })}
           </div>
         ) : (

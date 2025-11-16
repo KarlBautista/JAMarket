@@ -5,6 +5,7 @@ import { useProductContext } from '../contexts/ProductContext'
 import QuantityForm from '../components/customer/quantityForm'
 import { useCartContext } from '../contexts/CartContext'
 import { useAuthContext } from '../contexts/AuthContext'
+import Swal from 'sweetalert2'
 const ProductPage = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("id");
@@ -32,7 +33,20 @@ const ProductPage = () => {
       getProductData();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleAddToCart = async () => {
+    if(!customerData){
+      Swal.fire({
+        title: "Please Sign-in your account first",
+        text: "Sign-in to your account to add products to your cart.",
+        showConfirmButton: true,
+        icon: "info",
+      });
+      return;
+    }
     try{ 
       setShowQuantityForm(true);
     } catch(err){
@@ -96,16 +110,15 @@ const ProductPage = () => {
               {/* Price and Rating */}
               <div className="product-price-section">
                 <div className="product-price">${product.price}</div>
-                <div className="product-rating">
-                  <span className="rating-stars">★★★★★</span>
-                  <span className="rating-text">4.8 (156 reviews)</span>
+                <div className="product-stock">
+                  <p>{`Stock: ${product.stock_quantity}`}</p>
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="product-actions">
                 <button className="add-to-cart-btn" onClick={() => handleAddToCart()}>Add to Cart</button>
-                <button className="wishlist-btn">♡</button>
+            
               </div>
 
               {/* Store Information */}

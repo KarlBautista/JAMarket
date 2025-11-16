@@ -7,6 +7,7 @@ import Customer from "../../assets/customer.png"
 import Order from "../../assets/order.png";
 import Logout from "../../assets/logout.png"
 import { useAuthContext } from '../../contexts/AuthContext'
+import Swal from 'sweetalert2'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 const StoreOwnerNavigation = () => {
     const { partnerData, signOut } = useAuthContext();
@@ -17,12 +18,14 @@ const StoreOwnerNavigation = () => {
         try{
             const response = await signOut();
             if(response.error){
-                alert(response.error)
+                await Swal.fire({ title: 'Error', text: response.error, icon: 'error' });
+                return;
             }
-            alert(response.message);
+            await Swal.fire({ title: 'Signed-out', icon: 'success', text: response.message });
             navigate("/login");
         } catch (err) {
             console.error(err);
+            await Swal.fire({ title: 'Error', text: 'Something went wrong during sign out.', icon: 'error' });
         }
     }
 
