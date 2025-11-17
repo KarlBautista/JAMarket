@@ -17,7 +17,7 @@ const AddProducts = () => {
         stockQuantity: '',
         sku: '',
         productImage: null
-    })
+    });
 
     const handleInputChange = (e) => {
         const { name, value, type, files } = e.target
