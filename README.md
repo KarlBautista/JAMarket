@@ -1,0 +1,1 @@
+JAMarket is an e-commerce platform designed for the buying and selling of musical instruments. It incorporates a join seller functionality, enabling authorized users to register as sellers, manage product listings, and market their instruments within the platform.
