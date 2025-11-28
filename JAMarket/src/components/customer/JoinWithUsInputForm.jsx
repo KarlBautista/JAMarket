@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import "../../css/JoinWithUsInputForm.css"
-import { useState } from 'react'
 import { useAuthContext } from '../../contexts/AuthContext'
 const JoinWithUsInputForm = () => {
     const { handeJoinWithUs } = useAuthContext();
@@ -17,17 +16,34 @@ const JoinWithUsInputForm = () => {
         termsConditions: false
     })
 
+    const [logoPreview, setLogoPreview] = useState(null);
+    const fileInputRef = useRef(null);
+
     const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target;
         
         if (type === 'checkbox') {
             setUserData(u => ({...u, [name]: checked}));
         } else if (type === 'file') {
-            setUserData(u => ({...u, [name]: files[0]}));
+            const file = files[0];
+            setUserData(u => ({...u, [name]: file}));
+            if (file) {
+                const url = URL.createObjectURL(file);
+                setLogoPreview(url);
+            } else {
+                setLogoPreview(null);
+            }
         } else {
             setUserData(u => ({...u, [name]: value}));
         }
     }
+
+    useEffect(() => {
+        // revoke object URL when component unmounts or when preview changes
+        return () => {
+            if (logoPreview) URL.revokeObjectURL(logoPreview);
+        }
+    }, [logoPreview]);
 
     const joinWithUsBtn = async (e) => {
         e.preventDefault();
@@ -229,9 +245,25 @@ const JoinWithUsInputForm = () => {
                                     name="logo"
                                     accept=".pdf,.png,.jpg,.jpeg" 
                                     onChange={handleInputChange}
+                                    ref={fileInputRef}
                                     className="file-input-hidden" 
                                 />
                             </div>
+                            {logoPreview && (
+                                <div className="logo-preview">
+                                    <img src={logoPreview} alt="logo preview" />
+                                    <div className="logo-preview-controls">
+                                        <button type="button" className="clear-logo" onClick={() => {
+                                            // clear file and preview
+                                            setUserData(u => ({...u, logo: null}));
+                                            URL.revokeObjectURL(logoPreview);
+                                            setLogoPreview(null);
+                                            if (fileInputRef.current) fileInputRef.current.value = '';
+                                        }}>Remove</button>
+                                        <p className="logo-filename">{userData.logo?.name}</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
