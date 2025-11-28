@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import "../../css/Register.css";
 import  { useAuthContext } from "../../contexts/AuthContext"
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 const Register = () => {
     const { session, signUp } = useAuthContext();  
     const navigate = useNavigate();
@@ -25,12 +26,20 @@ const Register = () => {
         
     
         if(registerData.password !== confirmPassword){
-            alert("Passwords do not match!");
-            return;
+          Swal.fire({
+            icon: 'error',
+            title: 'Passwords do not match',
+            text: 'Please make sure your password and confirmation match.'
+          })
+          return;
         }
         if(!registerData.firstName || !registerData.lastName || !registerData.email || !registerData.password){
-            alert("Please fill in all fields!");
-            return;
+          Swal.fire({
+            icon: 'warning',
+            title: 'Missing fields',
+            text: 'Please fill in all required fields.'
+          })
+          return;
         }
 
         try{
@@ -38,11 +47,22 @@ const Register = () => {
                ...registerData, 
                user_type:"CUSTOMER"
            });
-           if(response.error){
-            alert(response.error);
+             if(response.error){
+            Swal.fire({
+              icon: 'error',
+              title: 'Registration failed',
+              text: response.error
+            });
             return;
-           }
-           alert(response.message || "Registration successful!");
+             }
+
+             await Swal.fire({
+            icon: 'success',
+            title: 'Account created',
+            text: response.message || 'Registration successful!',
+            timer: 1800,
+            showConfirmButton: false
+             });
 
 
            setRegisterData({

@@ -18,7 +18,11 @@ const NavBar = () => {
 
   const handleCartBtn = () => {
     if(session === null){
-     alert("You need to log in first");
+        Swal.fire({
+            icon: 'info',
+            title: 'You need to login your account first',
+            text: 'Login your account first to be able to add items to your cart.'
+      })
     }
   }
 
