@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
         getSession();
 
-        // Listen for auth changes
+       
         const { data: { subscription}} = supabase.auth.onAuthStateChange(
             async (event, session) => {
                 if(event === "SIGNED_OUT"){
@@ -95,8 +95,6 @@ export const AuthProvider = ({ children }) => {
             }
             
             const userId = signUpData.user.id;
-
-            //dito mag uupload ng images
             let logoUrl = "";
             if(logo){
                 const { data: storageData, error: storageError } = await supabase.storage

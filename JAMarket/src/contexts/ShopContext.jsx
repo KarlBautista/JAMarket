@@ -44,7 +44,7 @@ export const ShopProvider = ({ children }) => {
 
     const getAllProductFromStore = async (id) => {
         try{
-            const response = await fetch(`https://jamarket.onrender.comapi/all-products-from-store?id=${id}`);
+            const response = await fetch(`https://jamarket.onrender.com/api/all-products-from-store?id=${id}`);
             if(!response.ok){
                 console.error(response.error);
                 return;
