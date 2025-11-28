@@ -15,7 +15,7 @@ export const CartProvider = ({ children }) => {
        
             
             try{
-                const response = await fetch(`http://localhost:5000/api/get-cart?userId=${userId}`)
+                const response = await fetch(`https://jamarket.onrender.com/api/get-cart?userId=${userId}`)
                 if(!response.ok){
                     throw new Error(`failed to get cart: ${response.error}`);
                 }
@@ -46,7 +46,7 @@ export const CartProvider = ({ children }) => {
                console.log("Query string:", query); // Debug log
                console.log("Product IDs:", productId); // Debug log
                
-               const response = await fetch(`http://localhost:5000/api/get-cart-product?${query}`);
+               const response = await fetch(`https://jamarket.onrender.com/api/get-cart-product?${query}`);
                if(!response.ok){
                 throw new Error("Failed to get cart products: ", response.error );
                }
@@ -75,7 +75,7 @@ export const CartProvider = ({ children }) => {
    const addToCart = async (customerId, productId, quantity) => {
         
         try{
-            const response = await fetch("http://localhost:5000/api/add-to-cart", {
+            const response = await fetch("https://jamarket.onrender.com/api/add-to-cart", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -99,7 +99,7 @@ export const CartProvider = ({ children }) => {
         try{
             console.log("Deleting cart item with ID:", id); // Debug log
             
-            const response = await fetch(`http://localhost:5000/api/delete-from-cart?id=${id}`, {
+            const response = await fetch(`https://jamarket.onrender.com/api/delete-from-cart?id=${id}`, {
                 method: "DELETE",
             });
             

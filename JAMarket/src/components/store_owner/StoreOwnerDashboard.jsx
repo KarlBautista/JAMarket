@@ -16,7 +16,7 @@ const StoreOwnerDashboard = () => {
 
     useEffect(() => {
         const getAllProduct = async () => {
-            const response = await fetch(`http://localhost:5000/api/all-products?userId=${partnerData.id}`, {
+            const response = await fetch(`https://jamarket.onrender.com/api/all-products?userId=${partnerData.id}`, {
                     method: "GET"
                 });
             if(!response.ok){
@@ -180,7 +180,7 @@ const StoreOwnerDashboard = () => {
                     </div>
                 </div>
 
-                {/* -------------------- CHART CANVAS -------------------- */}
+             
 
                 <div className='chart-canvas'>
                     <div className="chart-row">

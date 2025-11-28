@@ -25,7 +25,7 @@ const Products = () => {
         if(!userId) return;
         const displayAllProducts = async () => {
             try{
-                const response = await fetch(`http://localhost:5000/api/all-products?userId=${userId}`, {
+                const response = await fetch(`https://jamarket.onrender.com/api/all-products?userId=${userId}`, {
                     method: "GET"
                 });
                 

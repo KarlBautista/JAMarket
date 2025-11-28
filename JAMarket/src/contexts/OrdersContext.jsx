@@ -19,7 +19,7 @@ export const OrderProvider = ({ children }) => {
             }
             
             try{
-                const response = await fetch(`http://localhost:5000/api/orders?id=${customerData.id}`);
+                const response = await fetch(`https://jamarket.onrender.com/api/orders?id=${customerData.id}`);
                 if(!response.ok){
                     console.error("Response not ok:", response.status);
                     return;
@@ -44,7 +44,7 @@ export const OrderProvider = ({ children }) => {
             }
             const orderIds = orders.map((order) => `orderId=${order.id}`).join("&");
             try{
-                const response = await fetch(`http://localhost:5000/api/order-items?${orderIds}`);
+                const response = await fetch(`https://jamarket.onrender.com/api/order-items?${orderIds}`);
                 if(!response.ok){
                     console.error("Order items response not ok:", response.status);
                     return;
@@ -65,7 +65,7 @@ export const OrderProvider = ({ children }) => {
 
   const placeOrder = async (userId, cartProduct, subtotal, mop, quantity) => {
     try{
-        const response = await fetch("http://localhost:5000/api/place-order", {
+        const response = await fetch("https://jamarket.onrender.com/api/place-order", {
              method: "POST",
              headers: {
                 "Content-Type": "application/json"
@@ -94,7 +94,7 @@ export const OrderProvider = ({ children }) => {
 
   const cancelOrder = async (orderId) => {
     try{
-        const response = await fetch(`http://localhost:5000/api/cancel-order?orderId=${orderId}`);
+        const response = await fetch(`https://jamarket.onrender.com/api/cancel-order?orderId=${orderId}`);
         if(!response.ok){
             console.log(response.status);
         }
@@ -108,7 +108,7 @@ export const OrderProvider = ({ children }) => {
 
   const deleteOrder = async (orderId) => {
     try{
-        const response = await fetch(`http://localhost:5000/api/delete-order?orderId=${orderId}`, {
+        const response = await fetch(`https://jamarket.onrender.com/api/delete-order?orderId=${orderId}`, {
             method: "DELETE"
         });
         if(!response.ok){
@@ -124,7 +124,7 @@ export const OrderProvider = ({ children }) => {
 
   const getAllOrdersFromStoreOwner = async (storeOwnerId) => {
         try{
-            const response = await fetch(`http://localhost:5000/api/orders-store-owner?storeOwnerId=${storeOwnerId}`);
+            const response = await fetch(`https://jamarket.onrender.com/api/orders-store-owner?storeOwnerId=${storeOwnerId}`);
             if(!response.ok){
                 console.error(response.status);
             }
@@ -138,7 +138,7 @@ export const OrderProvider = ({ children }) => {
 
   const rejectOrder = async (orderId) => {
         try{
-            const response = await fetch(`http://localhost:5000/api/reject-order?orderId=${orderId}`, {
+            const response = await fetch(`https://jamarket.onrender.com/api/reject-order?orderId=${orderId}`, {
                 method: "PUT"
             });
             if(!response.ok){
@@ -154,7 +154,7 @@ export const OrderProvider = ({ children }) => {
 
   const shipOrder = async (orderId) => {
         try{
-            const response = await fetch(`http://localhost:5000/api/ship-order?orderId=${orderId}`, {
+            const response = await fetch(`https://jamarket.onrender.com/api/ship-order?orderId=${orderId}`, {
                 method: "PUT"
             });
             if(!response.ok){
@@ -170,7 +170,7 @@ export const OrderProvider = ({ children }) => {
 
   const receiveOrder = async (orderId) => {
         try{
-            const response = await fetch(`http://localhost:5000/api/receive-order?orderId=${orderId}`, {
+            const response = await fetch(`https://jamarket.onrender.com/api/receive-order?orderId=${orderId}`, {
                 method: "PUT"
             });
             if(!response.ok){

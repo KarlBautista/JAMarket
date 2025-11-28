@@ -10,7 +10,7 @@ export const ProductProvider = ({ children }) => {
     useEffect(() => {
        const getFeaturedProducts = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/featured-products");
+            const response = await fetch("https://jamarket.onrender.com/api/featured-products");
             if(!response.ok){
                 console.error(`Error getting featured products: ${response.error}`);
                 return
@@ -26,7 +26,7 @@ export const ProductProvider = ({ children }) => {
 
     const getProduct = async (id) => {
         try{
-            const response = await fetch(`http://localhost:5000/api/product?id=${id}`);
+            const response = await fetch(`https://jamarket.onrender.com/api/product?id=${id}`);
             if(!response.ok){
                 console.error(response.error);
                 return
@@ -41,7 +41,7 @@ export const ProductProvider = ({ children }) => {
 
     const getProductByCategory = async (category) => {
         try {
-            const response = await fetch("http://localhost:5000/api/products-by-category", {
+            const response = await fetch("https://jamarket.onrender.com/api/products-by-category", {
                 method: "POST",
                 headers: {
                     "Content-Type": "Application/json"
@@ -61,7 +61,7 @@ export const ProductProvider = ({ children }) => {
 
     const deleteProduct = async (productId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/delete-product/${productId}`, {
+            const response = await fetch(`https://jamarket.onrender.com/api/delete-product/${productId}`, {
                 method: "DELETE"
             });
             const data = await response.json();
@@ -78,7 +78,7 @@ export const ProductProvider = ({ children }) => {
 
     const getProductToUpdate = async (productId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/product-to-update/${productId}`);
+            const response = await fetch(`https://jamarket.onrender.com/api/product-to-update/${productId}`);
             if(!response.ok){
                 console.error(`Error getting the product dat: ${response.statusText}`);
                 return

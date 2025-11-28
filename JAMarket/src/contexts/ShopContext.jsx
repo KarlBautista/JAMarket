@@ -10,7 +10,7 @@ export const ShopProvider = ({ children }) => {
     useEffect(() => {
         const getAllShops = async () => {
             try{
-                const response = await fetch("http://localhost:5000/api/all-shops");
+                const response = await fetch("https://jamarket.onrender.com/api/all-shops");
                 if(!response.ok){
                     console.error(response.error);
                     return;
@@ -24,7 +24,7 @@ export const ShopProvider = ({ children }) => {
 
         const getAllProducts = async () => {
             try{
-                const response = await fetch("http://localhost:5000/api/all-shop-products");
+                const response = await fetch("https://jamarket.onrender.com/api/all-shop-products");
                 if(!response.ok){
                     console.error(response.error);
                     return
@@ -44,7 +44,7 @@ export const ShopProvider = ({ children }) => {
 
     const getAllProductFromStore = async (id) => {
         try{
-            const response = await fetch(`http://localhost:5000/api/all-products-from-store?id=${id}`);
+            const response = await fetch(`https://jamarket.onrender.comapi/all-products-from-store?id=${id}`);
             if(!response.ok){
                 console.error(response.error);
                 return;

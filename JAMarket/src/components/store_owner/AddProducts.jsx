@@ -49,7 +49,7 @@ const AddProducts = () => {
         formData.append("productImage", productData.productImage);
        
         try{
-            const response = await fetch("http://localhost:5000/api/add-product", {
+            const response = await fetch("https://jamarket.onrender.com/api/add-product", {
                 method: "POST",
                 body: formData,
             });
